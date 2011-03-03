@@ -1,0 +1,64 @@
+body {
+	background:url('title.png') no-repeat #111111;
+	position:absolute;
+	right:0;
+	width:51.75em;
+}
+html > body {width:51em;}
+div {
+	border:1px solid;
+	float:right;
+	height:12em;
+	margin:.3em;
+	overflow:hidden;
+	width:12em;
+}
+div.large {
+	height:24.7em;
+	overflow:scroll;
+	width:37.5em;
+}
+div#a {
+	background:#333333;
+	border-color:#333333;
+}
+div#b {
+	background:#444444;
+	border-color:#444444;
+}
+div#c {
+	background:#555555;
+	border-color:#555555;
+}
+div#d {
+	background:#666666;
+	border-color:#666666;
+}
+div#e {
+	background:#dddddd;
+	border-color:#dddddd;
+}
+div#f {
+	background:#777777;
+	border-color:#777777;
+}
+div#g {
+	background:#888888;
+	border-color:#888888;
+}
+div#h {
+	background:#cccccc;
+	border-color:#cccccc;
+}
+div#i {
+	background:#bbbbbb;
+	border-color:#bbbbbb;
+}
+div#j {
+	background:#aaaaaa;
+	border-color:#aaaaaa;
+}
+div#k {
+	background:#999999;
+	border-color:#999999;
+}
