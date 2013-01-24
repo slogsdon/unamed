@@ -6,7 +6,7 @@ class Unamed {
 	public function __construct() {
 		$this->getConfiguration();
 		#$this->checkCache();
-		$this->load('namespaces');
+		#$this->load('namespaces');
 		$this->load('utilities');
 		$this->requestHandler();
 	}
@@ -51,22 +51,22 @@ class Unamed {
 			$this->$namespace->load($topic);
 	}
 };
-class Namespace {
-	// children = sections under namespace
-	var $name;
-	var $isHidden = false;
-	var $needsAuthentication = false;
-	function __toString() {
-		return "'".$this->name."' namespace";
-	}
-	function load($topic='NamespaceIndex') {
-		if ($topic == 'NamespaceIndex')
-			print $this;
-		else
-			print $this.$topic;
-	}
-	//hasChildren
-};
+// class Namespace {
+// 	// children = sections under namespace
+// 	var $name;
+// 	var $isHidden = false;
+// 	var $needsAuthentication = false;
+// 	function __toString() {
+// 		return "'".$this->name."' namespace";
+// 	}
+// 	function load($topic='NamespaceIndex') {
+// 		if ($topic == 'NamespaceIndex')
+// 			print $this;
+// 		else
+// 			print $this.$topic;
+// 	}
+// 	//hasChildren
+// };
 class Utility {
 	var $name;
 };
