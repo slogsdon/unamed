@@ -1,6 +1,6 @@
 <?php
 
-$config['instalDirectory'] = '/';
+$config['installDirectory'] = '/';
 $config['hostname']    = 'http://quincy/'; //needs trailing slash
 $config['urlMagicWord']   = 'goto';
 $config['theme']       = 'default';
