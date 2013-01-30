@@ -9,4 +9,3 @@ $config['dbUser']     = 'root';
 $config['dbPassword']     = '';
 $config['dbName']     = 'test';
 $config['dbPrefix']     = 'unamed_';
-?>

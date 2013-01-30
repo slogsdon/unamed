@@ -1,0 +1,167 @@
+{
+    "hash": "f656d94a389a417d73f3380332a6f751",
+    "packages": [
+        {
+            "name": "cvele/klein.php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cvele/klein.php",
+                "reference": "cb69fd76b2467d403abfd0a063ce9bb5290a86c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/cvele/klein.php/archive/cb69fd76b2467d403abfd0a063ce9bb5290a86c8.zip",
+                "reference": "cb69fd76b2467d403abfd0a063ce9bb5290a86c8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "time": "2013-01-09 15:11:37",
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "klein.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1",
+                " BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Chris O'Hara",
+                    "homepage": "https://github.com/chriso/klein.php"
+                }
+            ]
+        },
+        {
+            "name": "j4mie/idiorm",
+            "version": "v1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/j4mie/idiorm",
+                "reference": "v1.2.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/j4mie/idiorm/archive/v1.2.3.zip",
+                "reference": "v1.2.3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "time": "2012-11-28 10:44:18",
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "idiorm.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause",
+                "BSD-3-Clause",
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Holywell",
+                    "email": "treffynnon@php.net",
+                    "homepage": "http://simonholywell.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Jamie Matthews",
+                    "email": "jamie.matthews@gmail.com",
+                    "homepage": "http://j4mie.org",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Durham Hale",
+                    "email": "me@durhamhale.com",
+                    "homepage": "http://durhamhale.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A lightweight nearly-zero-configuration object-relational mapper and fluent query builder for PHP5",
+            "homepage": "http://j4mie.github.com/idiormandparis",
+            "keywords": [
+                "orm",
+                "query builder",
+                "idiorm"
+            ]
+        },
+        {
+            "name": "j4mie/paris",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/j4mie/paris",
+                "reference": "v1.2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/j4mie/paris/archive/v1.2.0.zip",
+                "reference": "v1.2.0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0",
+                "j4mie/idiorm": "1.2.*"
+            },
+            "time": "2012-11-14 16:58:08",
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "paris.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause",
+                "BSD-3-Clause",
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Holywell",
+                    "email": "treffynnon@php.net",
+                    "homepage": "http://simonholywell.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Jamie Matthews",
+                    "email": "jamie.matthews@gmail.com",
+                    "homepage": "http://j4mie.org",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Durham Hale",
+                    "email": "me@durhamhale.com",
+                    "homepage": "http://durhamhale.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A lightweight Active Record implementation for PHP5, built on top of Idiorm",
+            "homepage": "http://j4mie.github.com/idiormandparis",
+            "keywords": [
+                "orm",
+                "Active Record",
+                "model",
+                "paris"
+            ]
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "cvele/klein.php": 20
+    }
+}

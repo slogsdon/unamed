@@ -1,0 +1,23 @@
+{
+	"name": "slogsdon/cms",
+    "type": "cms",
+    "description": "A lightweight CMS compatible with Wordpress plugins and themes",
+    "keywords": [],
+    "homepage": "http://github.com/slogsdon/cms",
+    "support": {
+        "issues": "https://github.com/slogsdon/cms/issues",
+        "source": "https://github.com/slogsdon/cms"
+    },
+    "authors": [
+        {
+            "name": "Shane Logsdon",
+            "email": "shane.a.logsdon@gmail.com",
+            "homepage": "http://www.shanelogsdon.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "cvele/klein.php": "dev-master",
+        "j4mie/paris": "v1.2.0"
+    }
+}

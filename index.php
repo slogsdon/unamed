@@ -1,6 +1,9 @@
 <?php
 session_start();
-include('includes/error.php');
-include("includes/base.php");
-new Unamed();
-?>
+require './vendor/autoload.php';
+include './includes/baseClasses.php';
+
+$un = new Unamed();
+
+include './includes/functions.php';
+$un->init();
