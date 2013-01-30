@@ -10,6 +10,23 @@ function execute($hook) {
 	$un->execute($hook);
 }
 
+// theme functions
 function get_after_body() {
 	execute('after_body');
+}
+
+function get_header() {
+	global $un;
+	if (file_exists(THEMES_DIR . $un->options->theme . '/header.php')) {
+		include THEMES_DIR . $un->options->theme . '/header.php';
+	}
+	return;
+}
+
+function get_footer() {
+	global $un;
+	if (file_exists('./themes/' . $un->options->theme . '/footer.php')) {
+		include THEMES_DIR . $un->options->theme . '/footer.php';
+	}
+	return;
 }
