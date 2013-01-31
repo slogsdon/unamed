@@ -1,6 +1,6 @@
 <?php
 
-class Wordpress extends Plugin {
+class Wordpress {
 	private $hookAliases = array(
 		'muplugins_loaded' => 'ms_plugins_loaded',//
 		'wp_register_sidebar_widget' => 'register_sidebar_widget',//

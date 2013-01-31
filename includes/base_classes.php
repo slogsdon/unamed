@@ -1,15 +1,12 @@
 <?php
-if (!session_id()) die();
 class Unamed {
 	/* Properties */
-	private $actions = array();
 	public $options = null;
-	private $post_types = array(
-		'post',
-	);
-	private $target_post_type = 'post';
-	private $selected_posts = null;
+	private $actions = array();
+	private $cache = null;
+	private $cache_key = null;
 	private $page_hook_run_order = array(
+		'startup',
 		'ms_plugins_loaded',
 		'registered_taxonomy',
 		'registered_post_type',
@@ -59,15 +56,28 @@ class Unamed {
 		'admin_bar_render',
 		'after_admin_bar_render',
 		'shutdown',
-	);	
+	);
+	private $post_types = array(
+		'post',
+	);
+	private $selected_posts = null;
+	private $target_post_type = 'post';
 
 	/* Methods */
 	public function __construct() {
-		$this->load_options();
-		#$this->checkCache();
-		foreach ($this->page_hook_run_order as $hook) {
-			if (is_callable(array($this, $hook))) {
-				$this->enqueue($hook, array($this, $hook));
+		$this->cache_key = $this->create_cache_key();
+		if (ENABLE_CACHE && 
+			class_exists('Cache') && 
+			Cache::is_hit($this->cache_key)) {
+			header('X-Cached: true');
+			print Cache::get($this->cache_key);
+		} else {
+			//session_start();
+			$this->load_options();
+			foreach ($this->page_hook_run_order as $hook) {
+				if (is_callable(array($this, $hook))) {
+					$this->enqueue($hook, array($this, $hook));
+				}
 			}
 		}
 		return;
@@ -101,21 +111,26 @@ class Unamed {
 	}
 
 	private function load($dir) {
-		// read $dir, add filenames to $blocks
+		// read $dir, add filenames
 		if ($d = dir($dir . '/')) {
 			$dir .= '/';
-			$blocks = array();
+			$a = array();
 			while (false !== ($file = $d->read())) {
 				if ($file != "." && $file != ".." && 
-					!in_array($file, $blocks) && 
-					substr($file, strlen($file) - 4) == ".php") {
-					$blocks[ucfirst(substr($file, 0, -4))] = $file;
+					!in_array($file, $a)) {
+					if (substr($file, -4) == ".php") {
+						$a[ucfirst(substr($file, 0, -4))] = $file;
+					} else if (is_dir($dir . $file)) {
+						$a[ucfirst($file)] = $file . '/' . $file . '.php';
+					}
 				}
 			}
 			// include and create
-			foreach ($blocks as $name => $file) {
-				include_once $dir . $file;
-				if ($this->$name = new $name) {
+			foreach ($a as $name => $file) {
+				if (file_exists($dir . $file)) {
+					include_once $dir . $file;
+				}
+				if (class_exists($name) && $this->$name = new $name) {
 					$this->$name->name = $name;
 				}
 			}
@@ -123,6 +138,10 @@ class Unamed {
 			include_once $dir . '.php';
 		}
 		return;
+	}
+
+	private function create_cache_key() {
+		return 'un_cache' . str_replace('/', '_', $_SERVER['REQUEST_URI']);
 	}
 
 	private function load_options() {
@@ -163,25 +182,21 @@ class Unamed {
 		return true;
 	}
 
-	public function get_the_posts() {
-		return $
+	public function the_posts() {
+		return $this->selected_posts;
 	}
 
-	// Page Hook Methods	
-	private function plugins_loaded() {
-		$this->load('plugins');
+	public function has_posts() {
+		return !is_null($this->selected_posts) && count($this->selected_posts);
+	}
+
+	// Page Hook Methods
+	private function startup() {
+		ob_start('ob_tidyhandler');
 		return;
 	}
-	
-	private function setup_theme() {
-		$theme_dir = THEMES_DIR . $this->options->theme . '/';
-		$has = $this->check_theme_files($theme_dir);
-		if ($has['functions']) {
-			include_once $theme_dir . 'functions.php';
-		}
-		if ($has['homepage'] && $this->is_home()) {
-			include_once $theme_dir . 'homepage.php';
-		}
+	private function plugins_loaded() {
+		$this->load('plugins');
 		return;
 	}
 	
@@ -201,9 +216,31 @@ class Unamed {
 		$this->selected_posts = $posts;
 		return;
 	}
+	
+	private function template_redirect() {
+		$theme_dir = THEMES_DIR . $this->options->theme . '/';
+		$has = $this->check_theme_files($theme_dir);
+		if ($has['functions']) {
+			include_once $theme_dir . 'functions.php';
+		}
+		if ($has['homepage'] && $this->is_home()) {
+			include_once $theme_dir . 'homepage.php';
+		}
+		return;
+	}
+
+	private function shutdown() {
+		$buffer = ob_get_clean();
+		$config = array(
+			'indent' => true,
+			'input-xml' => true,
+			'wrap' => 200
+		);
+		$tidy = tidy_repair_string($buffer, $config, 'UTF8');
+		if (ENABLE_CACHE && class_exists('Cache')) Cache::add($this->cache_key, (string)$tidy);
+		echo $tidy;
+	}
 };
 
-class Plugin {
-	var $name;
-};
+
 

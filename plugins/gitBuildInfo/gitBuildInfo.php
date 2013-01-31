@@ -1,6 +1,6 @@
 <?php
 
-class GitBuildInfo extends Plugin {
+class GitBuildInfo {
 	public function __construct() {
 		enqueue('after_body', array($this, 'getBuildInfo'));
 	}

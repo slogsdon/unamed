@@ -30,3 +30,13 @@ function get_footer() {
 	}
 	return;
 }
+
+function the_posts() {
+	global $un;
+	return $un->the_posts();
+}
+
+function has_posts() {
+	global $un;
+	return $un->has_posts();
+}

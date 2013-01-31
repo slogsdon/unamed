@@ -1,4 +1,4 @@
 <?php
-require './includes/settings.php';
 
-$un->run();
+require_once './includes/settings.php';
+require_once './includes/load.php';
