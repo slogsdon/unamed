@@ -7,7 +7,7 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_LOGGING', true);
 
-define('ENABLE_CACHE', false);
+define('ENABLE_CACHE', true);
 
 // Directories
 define('BASE_DIR', './');

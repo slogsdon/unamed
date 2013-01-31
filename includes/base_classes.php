@@ -62,6 +62,7 @@ class Unamed {
 	);
 	private $selected_posts = null;
 	private $target_post_type = 'post';
+	private $theme = null;
 
 	/* Methods */
 	public function __construct() {
@@ -195,8 +196,19 @@ class Unamed {
 		ob_start('ob_tidyhandler');
 		return;
 	}
+
 	private function plugins_loaded() {
 		$this->load('plugins');
+		return;
+	}
+
+	private function setup_theme() {
+		$this->theme = new stdClass();
+		$this->theme->dir = THEMES_DIR . $this->options->theme . '/';
+		$this->theme->has = $this->check_theme_files($this->theme->dir);
+		if ($this->theme->has['functions']) {
+			include_once $this->theme->dir . 'functions.php';
+		}
 		return;
 	}
 	
@@ -218,13 +230,8 @@ class Unamed {
 	}
 	
 	private function template_redirect() {
-		$theme_dir = THEMES_DIR . $this->options->theme . '/';
-		$has = $this->check_theme_files($theme_dir);
-		if ($has['functions']) {
-			include_once $theme_dir . 'functions.php';
-		}
-		if ($has['homepage'] && $this->is_home()) {
-			include_once $theme_dir . 'homepage.php';
+		if ($this->theme->has['homepage'] && $this->is_home()) {
+			include_once $this->theme->dir . 'homepage.php';
 		}
 		return;
 	}
@@ -239,8 +246,20 @@ class Unamed {
 		$tidy = tidy_repair_string($buffer, $config, 'UTF8');
 		if (ENABLE_CACHE && class_exists('Cache')) Cache::add($this->cache_key, (string)$tidy);
 		echo $tidy;
+		return;
 	}
 };
 
+class Cache {
+	public static function add($key, $data) {
+		return file_put_contents(CACHE_DIR . $key, $data);
+	}
 
+	public static function get($key) {
+		return file_get_contents(CACHE_DIR . $key);
+	}
 
+	public static function is_hit($key) {
+		return file_exists(CACHE_DIR . $key);
+	}
+}
