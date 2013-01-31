@@ -1,5 +1,4 @@
 .DS_Store
-cache/*
 vendor/
 wordpress/
 composer.phar
