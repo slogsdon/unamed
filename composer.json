@@ -1,7 +1,7 @@
 {
 	"name": "slogsdon/unamed",
     "type": "cms",
-    "description": "A lightweight CMS compatible with Wordpress plugins and themes",
+    "description": "a Wordpress replacement built with simplicity and speed in mind",
     "keywords": [],
     "homepage": "http://github.com/slogsdon/unamed",
     "support": {
