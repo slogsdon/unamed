@@ -3,10 +3,10 @@
     "type": "cms",
     "description": "A lightweight CMS compatible with Wordpress plugins and themes",
     "keywords": [],
-    "homepage": "http://github.com/slogsdon/cms",
+    "homepage": "http://github.com/slogsdon/unamed",
     "support": {
-        "issues": "https://github.com/slogsdon/cms/issues",
-        "source": "https://github.com/slogsdon/cms"
+        "issues": "https://github.com/slogsdon/unamed/issues",
+        "source": "https://github.com/slogsdon/unamed"
     },
     "authors": [
         {
@@ -17,10 +17,14 @@
         }
     ],
     "require": {
+        "php": ">=5.3.0",
         "torophp/torophp": "dev-master",
-        "j4mie/paris": "v1.2.0"
+        "j4mie/paris": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
+    },
+    "config": {
+        "vendor-dir": "includes/vendor"
     }
 }
