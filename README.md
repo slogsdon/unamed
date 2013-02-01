@@ -1,6 +1,6 @@
 # Unamed
 ---
-[![Build Status](https://travis-ci.org/slogsdon/unamed.png?branch=master)](https://travis-ci.org/slogsdon/unamed)
+[![Build Status](https://travis-ci.org/slogsdon/unamed.png)](https://travis-ci.org/slogsdon/unamed)
 
 ### What is it?
 
@@ -28,13 +28,16 @@ To be honest, I wanted to learn more about Wordpress and all it has to offer, an
 * Build the admin interface
 
 ### Setup
+
 * Clone the repo:
-* ```
+
+```
 $ git clone https://github.com/slogsdon/unamed.git
 $ cd unamed
 ```
 * Install dependenices:
-* ```
+
+```
 $ curl -s https://getcomposer.org/installer | php
 $ php composer.phar install
 ```
