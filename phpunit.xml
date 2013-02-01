@@ -1,0 +1,10 @@
+<phpunit backupGlobals="true"
+         backupStaticAttributes="false"
+         bootstrap="test/bootstrap.php"
+         cacheTokens="false"
+         colors="true">
+    <testsuites>
+        <testsuite name="Unamed Test Suite">
+        </testsuite>
+    </testsuites>
+</phpunit>

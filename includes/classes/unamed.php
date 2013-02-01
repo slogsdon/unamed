@@ -5,6 +5,7 @@ class Unamed {
 	private $actions = array();
 	private $cache = null;
 	private $cache_key = null;
+	private $is_404 = false;
 	private $page_hook_run_order = array(
 		'startup',
 		'ms_plugins_loaded',
@@ -58,7 +59,9 @@ class Unamed {
 		'shutdown',
 	);
 	private $post_types = array(
-		'post',
+		'post' => array(
+			'public' => true,
+		),
 	);
 	private $selected_posts = null;
 	private $target_post_type = 'post';
@@ -75,6 +78,9 @@ class Unamed {
 		} else {
 			//session_start();
 			$this->load_options();
+			if (isset($_GET['post_type'])) {
+				$this->target_post_type = $_GET['post_type'];
+			}
 			foreach ($this->page_hook_run_order as $hook) {
 				if (is_callable(array($this, $hook))) {
 					$this->enqueue($hook, array($this, $hook));
@@ -183,6 +189,10 @@ class Unamed {
 		return true;
 	}
 
+	public function is_404() {
+		return $this->is_404;
+	}
+
 	public function the_posts() {
 		return $this->selected_posts;
 	}
@@ -218,12 +228,17 @@ class Unamed {
 	}
 
 	private function posts_selection() {
-		$posts = Model::factory('Post')->
-			where('post_type', $this->target_post_type)->
-			order_by_desc('post_date')->
-			find_many();
-		foreach ($posts as $post) {
-			$post->postmeta = $post->postmeta();
+		$posts = array();
+		if ($this->post_types[$this->target_post_type]['public'] == true) {
+			$posts = Model::factory('Post')->
+				where('post_type', $this->target_post_type)->
+				order_by_desc('post_date')->
+				find_many();
+			foreach ($posts as $post) {
+				$post->postmeta = $post->postmeta();
+			}
+		} else {
+			$this->is_404 = true;
 		}
 		$this->selected_posts = $posts;
 		return;
@@ -244,22 +259,12 @@ class Unamed {
 			'wrap' => 200
 		);
 		$tidy = tidy_repair_string($buffer, $config, 'UTF8');
-		if (ENABLE_CACHE && class_exists('Cache')) Cache::add($this->cache_key, (string)$tidy);
+		if (ENABLE_CACHE && 
+			class_exists('Cache') &&
+			!$this->is_404()) {
+			Cache::add($this->cache_key, (string)$tidy);
+		}
 		echo $tidy;
 		return;
 	}
 };
-
-class Cache {
-	public static function add($key, $data) {
-		return file_put_contents(CACHE_DIR . $key, $data);
-	}
-
-	public static function get($key) {
-		return file_get_contents(CACHE_DIR . $key);
-	}
-
-	public static function is_hit($key) {
-		return file_exists(CACHE_DIR . $key);
-	}
-}

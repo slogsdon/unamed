@@ -13,6 +13,9 @@ define('ENABLE_CACHE', true);
 define('BASE_DIR', './');
 define('CACHE_DIR', BASE_DIR . 'cache/');
 define('INCLUDES_DIR', BASE_DIR . 'includes/');
-define('MODELS_DIR', BASE_DIR . 'models/');
 define('THEMES_DIR', BASE_DIR . 'themes/');
 define('VENDOR_DIR', BASE_DIR . 'vendor/');
+
+define('CLASSES_DIR', INCLUDES_DIR . 'classes/');
+define('HANDLERS_DIR', INCLUDES_DIR . 'handlers/');
+define('MODELS_DIR', INCLUDES_DIR . 'models/');
