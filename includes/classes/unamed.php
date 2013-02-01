@@ -6,6 +6,7 @@ class Unamed {
 	private $cache = null;
 	private $cache_key = null;
 	private $is_404 = false;
+	// TODO: reduce used hooks. force plugins to add extra at runtime
 	private $page_hook_run_order = array(
 		'startup',
 		'ms_plugins_loaded',
