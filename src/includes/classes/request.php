@@ -7,18 +7,27 @@ use Unamed\Interfaces;
 		const DEFAULT_METHOD = 'GET';
 		const DEFAULT_URI = '/';
 
+		public $body = null;
 	    public $headers = array();
 	    public $method = null;
 	    public $uri = null;
 
 		public function __construct() {
-	        $this->headers = $this->getHeaders();
-	        $this->method = $this->getMethod();
-	        $this->uri = $this->getUri();
+			$this->body = $this->body();
+	        $this->headers = $this->headers();
+	        $this->method = $this->method();
+	        $this->uri = $this->uri();
 	    }
 		public function Request() { $this->__construct(); }
 
-		public function getHeaders() {
+		public function body() {
+			if (is_null($this->body)) {
+				$this->body = @file_get_contents('php://input');
+			}
+			return $this->body;
+		}
+
+		public function headers() {
 			if ($this->headers = array()) {
 				foreach ($_SERVER as $name => $value) { 
 		           if (substr($name, 0, 5) == 'HTTP_') {
@@ -41,7 +50,7 @@ use Unamed\Interfaces;
 		    return $this->headers;
 		}
 
-		public function getMethod() {
+		public function method() {
 			if ($this->method == null) {
 				$this->method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::DEFAULT_METHOD;
 		        if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
@@ -53,7 +62,7 @@ use Unamed\Interfaces;
 			return $this->method;
 		}
 
-		public function getUri() {
+		public function uri() {
 			if ($this->uri == null) {
 				$this->uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : self::DEFAULT_URI;
 		    }

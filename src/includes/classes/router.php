@@ -65,7 +65,7 @@ use Unamed\Interfaces;
 		            $pattern = '(?:'
 		                     . ($pre !== '' ? $pre : null)
 		                     . '('
-		                     . ($param !== '' ? "?P<$param>" : null)
+		                     . ($param !== '' ? "?P<".$param.">" : null)
 		                     . $type
 		                     . '))'
 		                     . ($optional !== '' ? '?' : null);
@@ -73,7 +73,7 @@ use Unamed\Interfaces;
 		            $route = str_replace($block, $pattern, $route);
 		        }
 		    }
-		    return "`^$route$`";
+		    return '`^'.$route.'$`';
 		}
 
 	    public function getData() {
@@ -97,9 +97,16 @@ use Unamed\Interfaces;
 		        }
 		    }
 	        foreach ($this->routes as $route => $controller) {
-	        	$routeRegEx = $this->compileRoute($route);
+	        	if (ENABLE_CACHE && \Unamed\Cache::isHit('route:' . $route)) {
+		        	$routeRegEx = \Unamed\Cache::get('route:' . $route);
+		        } else {
+		        	$routeRegEx = $this->compileRoute($route);
+		        }
 	        	if ($this->parse($path, $routeRegEx) === 1) {
 	        		$this->setController($controller);
+	        		if (isset($this->params['action'])) {
+	        			$this->setAction($this->params['action']);
+	        		}
 	        		continue;
 	        	}
 	        }
@@ -107,11 +114,9 @@ use Unamed\Interfaces;
 	    
 	    public function setAction($action) {
 	        $reflector = new \ReflectionClass(self::CONTROLLER_NAMESPACE . "\\" . $this->controller);
-	        if (!$reflector->hasMethod($action)) {
-	            throw new \InvalidArgumentException(
-	                "The controller action '$action' has been not defined.");
+	        if ($reflector->hasMethod($action)) {
+	        	$this->action = $action;
 	        }
-	        $this->action = $action;
 	        return $this;
 	    }
 
@@ -122,11 +127,9 @@ use Unamed\Interfaces;
 	    
 	    public function setController($controller) {
 	        $controller = ucfirst(strtolower($controller));
-	        if (!class_exists(self::CONTROLLER_NAMESPACE . "\\" . $controller)) {
-	            throw new \InvalidArgumentException(
-	                "The action controller '$controller' has not been defined.");
+	        if (class_exists(self::CONTROLLER_NAMESPACE . "\\" . $controller)) {
+	            $this->controller = $controller;
 	        }
-	        $this->controller = $controller;
 	        return $this;
 	    }
 	    

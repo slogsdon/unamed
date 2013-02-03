@@ -16,14 +16,22 @@ use Unamed\Interfaces;
 		public function __construct() {}
 		public function Response() { $this->__construct(); }
 
-		public function addHeader($name, $value) {
-			$this->headers[$name] = $value;
+		public function addHeader($name, $value, $replace = true) {
+			$this->headers[] = array(
+				'name' => $name,
+				'value' => $value,
+				'replace' => $replace,
+			);
 			return $this;
 		}
 
 		public function addHeaders(array $headers = array()) {
-			foreach ($headers as $name => $value) {
-				$this->addHeader($name, $value);
+			foreach ($headers as $header) {
+				$this->addHeader(
+					$header['name'],
+					$header['value'],
+					isset($header['replace']) ? $header['replace'] : true
+				);
 			}
 			return $this;
 		}
@@ -35,8 +43,8 @@ use Unamed\Interfaces;
 			} else {
 				header(self::HTTP_11 . ' ' . $this->status);
 			}
-			foreach ($this->headers as $name => $value) {
-				header($name . ': ' . $value);
+			foreach ($this->headers as $header) {
+				header($header['name'] . ': ' . $header['value'], $header['replace']);
 			}
 
 			// deliver
@@ -46,6 +54,25 @@ use Unamed\Interfaces;
 				echo $data;
 			}
 			return;
+		}
+
+		public function noCache() {
+			$this->addHeaders(array(
+				array(
+					'name' => 'Cache-Control',
+					'value' => 'no-store, no-cache, must-revalidate'
+				),
+				array(
+					'name' => 'Cache-Control',
+					'value' => 'post-check=0, pre-check=0',
+					'replace' => false
+				), 
+				array(
+					'name' => 'Pragma',
+					'value' => 'no-cache'
+				),
+			));
+			return $this;
 		}
 
 		public function setOptions(array $options) {

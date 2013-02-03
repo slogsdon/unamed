@@ -8,7 +8,8 @@ namespace Unamed {
 		protected $cache = null;
 		protected $cacheKey = null;
 		protected $fc = null;
-		protected $page_hook_run_order = array(
+		protected $isAdmin = null;
+		protected $pageHookRunOrder = array(
 			'startup',
 			'plugins_loaded',
 			'setup_theme',
@@ -22,24 +23,27 @@ namespace Unamed {
 				'public' => true,
 			),
 		);
-		protected $selected_posts = null;
+		protected $scripts = null;
+		protected $selectedPosts = null;
+		protecteed $styles = null;
 		protected $theme = null;
 
 		/* Methods */
-		public function __construct() {
+		public function __construct($isAdmin = false) {
+			$this->isAdmin = $isAdmin;
 			$this->fc = new FrontController\FrontController();
-			//print_r($this->fc);die();
-			$this->cache_key = $this->create_cache_key();
-			if (ENABLE_CACHE && 
+			$this->cacheKey = $this->createCacheKey();
+			if (!$this->isAdmin && 
+				ENABLE_CACHE && 
+				ENABLE_PAGE_CACHE &&
 				class_exists('Cache') && 
-				Cache::is_hit($this->cache_key)) {
+				Cache::isHit($this->cacheKey)) {
 				$this->fc->response->addHeader('X-Cached', 'true');
-				$this->fc->deliver(Cache::get($this->cache_key));
+				$this->fc->deliver(Cache::get($this->cacheKey));
 			} else {
-				$this->fc->router->addRoute('/api/[*]?', 'Api');
-				//session_start();
-				$this->load_options();
-				foreach ($this->page_hook_run_order as $hook) {
+				$this->startSession();
+				$this->loadOptions();
+				foreach ($this->pageHookRunOrder as $hook) {
 					if (is_callable(array($this, $hook))) {
 						$this->enqueue($hook, array($this, $hook));
 					}
@@ -52,8 +56,29 @@ namespace Unamed {
 			$this->__construct();
 		}
 
+		public function isAdmin() {
+			return $this->isAdmin;
+		}
+
+		public function addRoute($route, $controller) {
+			$this->fc->router->addRoute($route, $controller);
+			return $this;
+		}
+
+		public function addRoutes(array $routes) {
+			$this->fc->router->addRoutes($routes);
+			return $this;
+		}
+
+		protected function startSession() {
+			if (!session_id()) {
+				session_start();
+			}
+			return $this;
+		}
+
 		public function run() {
-			foreach ($this->page_hook_run_order as $hook) {
+			foreach ($this->pageHookRunOrder as $hook) {
 				$this->execute($hook);
 			}
 			return;
@@ -75,8 +100,10 @@ namespace Unamed {
 			return;
 		}
 
-		protected function load($dir) {
+		protected function loadPlugins() {
 			// read $dir, add filenames
+			$dir = 'plugins';
+			if ($this->isAdmin) $dir = '../' . $dir;
 			if ($d = dir($dir . DS)) {
 				$dir .= DS;
 				$a = array();
@@ -102,11 +129,11 @@ namespace Unamed {
 			return;
 		}
 
-		protected function create_cache_key() {
+		protected function createCacheKey() {
 			return 'un_cache' . str_replace('/', '_', $_SERVER['REQUEST_URI']);
 		}
 
-		protected function load_options() {
+		protected function loadOptions() {
 			if (is_null($this->options)) {
 				$this->options = new \stdClass();
 				$options = \Model::factory('Option')->where('autoload', '1')->find_many();
@@ -129,19 +156,19 @@ namespace Unamed {
 			return $ret;
 		}
 
-		protected function check_theme_files($theme_dir) {
+		protected function checkThemeForTemplateFiles($themeDir) {
 			$ret = array(
-				'homepage' => file_exists($theme_dir . 'homepage.php'),
-				'functions'=> file_exists($theme_dir . 'functions.php'),
+				'homepage' => file_exists($themeDir . 'homepage.php'),
+				'functions'=> file_exists($themeDir . 'functions.php'),
 			);
-			foreach($this->post_types as $post_type => $post_type_options) {
-				if ($post_type_options['public'] === true)
-					$ret[$post_type] = file_exists($theme_dir . $post_type . '.php');
+			foreach($this->post_types as $post_type => $postTypeOptions) {
+				if ($postTypeOptions['public'] === true)
+					$ret[$post_type] = file_exists($themeDir . $post_type . '.php');
 			}
 			return $ret;
 		}
 
-		public function isHome() {
+		public function is_home() {
 			return true;
 		}
 
@@ -155,7 +182,7 @@ namespace Unamed {
 		}
 
 		public function setSelectedPosts($posts) {
-			$this->selected_posts = $posts;
+			$this->selectedPosts = $posts;
 			return $this;
 		}
 
@@ -164,51 +191,95 @@ namespace Unamed {
 		}
 
 		public function the_posts() {
-			return $this->selected_posts;
+			return $this->selectedPosts;
 		}
 
 		public function has_posts() {
-			return !is_null($this->selected_posts) && count($this->selected_posts);
+			return !is_null($this->selectedPosts) && count($this->selectedPosts);
+		}
+
+		public function registerStyle( $handle, $src = '', $deps = array(), $ver = false, $media = false ) {
+			$this->styles->enqueue(new Style(
+				$handle,
+				$src,
+				$deps,
+				$ver,
+				$media,
+				false
+			));
+		}
+
+		public function enqueueStyle( $handle, $src = '', $deps = array(), $ver = false, $media = false ) {
+			
+		}
+
+		public function registerScript( $handle, $src = '', $deps = array(), $ver = false, $inFooter = true ) {
+			$this->scripts->enqueue(new Script(
+				$handle,
+				$src,
+				$deps,
+				$ver,
+				$inFooter,
+				false
+			));
+		}
+
+		public function enqueueScript( $handle, $src = '', $deps = array(), $ver = false, $in_footer = true ) {
+			
 		}
 
 		// Page Hook Methods
-		protected function startup() {
+		protected function init() {
 			ob_start();
+			$this->scripts = new \SplQueue();
+			$this->styles = new \SplQueue();
+			$this->execute('post_init');
 			return;
 		}
 
 		protected function plugins_loaded() {
-			$this->load('plugins');
+			$this->execute('pre_plugins_loaded');
+			$this->loadPlugins();
+			$this->execute('post_plugins_loaded');
 			return;
 		}
 
 		protected function setup_theme() {
-			$this->theme = new \stdClass();
-			$this->theme->dir = THEMES_DIR . $this->options->theme . DS;
-			$this->theme->has = $this->check_theme_files($this->theme->dir);
-			if ($this->theme->has['functions']) {
-				include_once $this->theme->dir . 'functions.php';
+			$this->execute('pre_setup_theme');
+			if (!$this->isAdmin) {
+				$this->theme = new \stdClass();
+				$this->theme->dir = THEMES_DIR . $this->options->theme . DS;
+				$this->theme->has = $this->checkThemeForTemplateFiles($this->theme->dir);
+				if ($this->theme->has['functions']) {
+					include_once $this->theme->dir . 'functions.php';
+				}
 			}
+			$this->execute('post_setup_theme');
 			return;
 		}
 		
 		protected function dispatch() {
 			$this->execute('pre_dispatch');
 			$this->fc->dispatch();
-			$this>execute('post_dispatch');
+			$this->execute('post_dispatch');
 			return;
 		}
 		
 		protected function template_included() {
-			$this>execute('pre_template_included');
-			if ($this->theme->has['homepage'] && $this->isHome()) {
-				include_once $this->theme->dir . 'homepage.php';
+			$this->execute('pre_template_included');
+			if (!$this->isAdmin) {
+				if ($this->theme->has['homepage'] && $this->is_home()) {
+					include_once $this->theme->dir . 'homepage.php';
+				}
+			} else {
+				include_once INCLUDES_DIR . 'frontend.php';
 			}
-			$this>execute('post_template_included');
+			$this->execute('post_template_included');
 			return;
 		}
 
-		protected function shutdown() {
+		protected function deliver() {
+			$this->execute('pre_deliver');
 			$buffer = ob_get_clean();
 			$config = array(
 				'indent' => true,
@@ -216,12 +287,15 @@ namespace Unamed {
 				'wrap' => 200
 			);
 			$tidy = tidy_repair_string($buffer, $config, 'UTF8');
-			if (ENABLE_CACHE && 
-				class_exists('Cache') &&
-				!$this->is_404()) {
-				Cache::add($this->cache_key, (string)$tidy);
+			if (!$this->isAdmin &&
+				!$this->is_404() &&
+				ENABLE_CACHE && 
+				ENABLE_PAGE_CACHE &&
+				class_exists('Cache')) {
+				Cache::add($this->cacheKey, (string)$tidy);
 			}
 			$this->fc->deliver($tidy);
+			$this->execute('post_deliver');
 			return;
 		}
 	};

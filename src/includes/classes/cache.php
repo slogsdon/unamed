@@ -15,7 +15,7 @@ namespace Unamed {
 			return file_get_contents(CACHE_DIR . $path . $file);
 		}
 
-		public static function is_hit($key) {
+		public static function isHit($key) {
 			$file = md5($key);
 			$path = substr($file, 0, 1) . DS . substr($file, 0, 2) . DS;
 			return file_exists(CACHE_DIR . $path . $file);
