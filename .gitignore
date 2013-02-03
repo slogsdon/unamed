@@ -1,3 +1,3 @@
 .DS_Store
-includes/vendor/
+src/includes/vendor/
 composer.lock

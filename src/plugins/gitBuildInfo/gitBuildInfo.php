@@ -2,7 +2,7 @@
 
 class GitBuildInfo {
 	public function __construct() {
-		enqueue('after_body', array($this, 'getBuildInfo'));
+		enqueue('post_template_included', array($this, 'getBuildInfo'));
 	}
 
 	public function GitBuildInfo() {
