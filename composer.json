@@ -25,6 +25,6 @@
         "phpunit/phpunit": "3.7.*"
     },
     "config": {
-        "vendor-dir": "includes/vendor"
+        "vendor-dir": "src/includes/vendor"
     }
 }
