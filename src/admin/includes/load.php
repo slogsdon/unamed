@@ -1,10 +1,9 @@
 <?php
 
-require_once '../' . VENDOR_DIR . 'autoload.php';
-include_once '../' . INCLUDES_DIR . 'orm.php';
+require_once '../'. VENDOR_DIR . 'autoload.php';
+include_once '../'. INCLUDES_DIR . 'orm.php';
 
-foreach (glob('../' . MODELS_DIR . '*.php') as $filename)
-{
+foreach (glob('../' . MODELS_DIR . '*.php') as $filename) {
     include_once $filename;
 }
 
