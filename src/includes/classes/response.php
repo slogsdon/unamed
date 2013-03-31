@@ -1,21 +1,55 @@
 <?php
+/**
+ * Unamed - a WordPress replacement
+ *
+ * @category CMS
+ * @package  Unamed
+ * @author   Shane Logsdon <shane.a.logsdon@gmail.com>
+ * @license  MIT http://mit.edu/
+ * @link     http://bitbucket.org/slogsdon/unamed
+ */
 
 namespace Unamed\FrontController;
 {
+    /**
+     * Response
+     *
+     * @category Class
+     * @package  Unamed
+     * @author   Shane Logsdon <shane.a.logsdon@gmail.com>
+     * @license  MIT http://mit.edu/
+     * @link     http://bitbucket.org/slogsdon/unamed
+     */
     class Response
     {
+        /* Constants */
         const DEFAULT_STATUS = 200;
         const HTTP_10 = 'HTTP/1.0';
         const HTTP_11 = 'HTTP/1.1';
 
+        /* Properties */
         protected $headers = array();
         protected $options = array();
         protected $status = self::DEFAULT_STATUS;
         protected $use10 = false;
 
-        public function __construct() {}
-        public function Response() { $this->__construct(); }
+        /* Methods */
+        /**
+         * __construct
+         */
+        public function __construct()
+        {
+        }
 
+        /**
+         * addHeader
+         *
+         * @param string $name    - 
+         * @param string $value   - 
+         * @param bool   $replace - 
+         *
+         * @return object(Response)
+         */
         public function addHeader($name, $value, $replace = true)
         {
             $this->headers[] = array(
@@ -23,11 +57,17 @@ namespace Unamed\FrontController;
                 'value' => $value,
                 'replace' => $replace,
             );
-
             return $this;
         }
 
-        public function addHeaders(array $headers = array())
+        /**
+         * addHeaders
+         *
+         * @param bool $headers - 
+         *
+         * @return object(Response)
+         */
+        public function addHeaders(array $headers)
         {
             foreach ($headers as $header) {
                 $this->addHeader(
@@ -40,6 +80,14 @@ namespace Unamed\FrontController;
             return $this;
         }
 
+        /**
+         * deliver
+         *
+         * @param string          $request - 
+         * @param callback|string $data    - 
+         *
+         * @return object(Response)
+         */
         public function deliver($request, $data)
         {
             // set up
@@ -49,7 +97,10 @@ namespace Unamed\FrontController;
                 header(self::HTTP_11 . ' ' . $this->status);
             }
             foreach ($this->headers as $header) {
-                header($header['name'] . ': ' . $header['value'], $header['replace']);
+                header(
+                    $header['name'] . ': ' . 
+                    $header['value'], $header['replace']
+                );
             }
 
             // deliver
@@ -58,65 +109,90 @@ namespace Unamed\FrontController;
             } else {
                 echo $data;
             }
-
             return;
         }
 
+        /**
+         * noCache
+         *
+         * @return object(Response)
+         */
         public function noCache()
         {
-            $this->addHeaders(array(
+            $this->addHeaders(
                 array(
-                    'name' => 'Cache-Control',
-                    'value' => 'no-store, no-cache, must-revalidate'
-                ),
-                array(
-                    'name' => 'Cache-Control',
-                    'value' => 'post-check=0, pre-check=0',
-                    'replace' => false
-                ),
-                array(
-                    'name' => 'Pragma',
-                    'value' => 'no-cache'
-                ),
-            ));
-
+                    array(
+                        'name' => 'Cache-Control',
+                        'value' => 'no-store, no-cache, must-revalidate'
+                    ),
+                    array(
+                        'name' => 'Cache-Control',
+                        'value' => 'post-check=0, pre-check=0',
+                        'replace' => false
+                    ),
+                    array(
+                        'name' => 'Pragma',
+                        'value' => 'no-cache'
+                    ),
+                )
+            );
             return $this;
         }
 
+        /**
+         * setOptions
+         *
+         * @param string $options - 
+         *
+         * @return object(Response)
+         */
         public function setOptions(array $options)
         {
             $this->options = $options;
-
             return $this;
         }
 
+        /**
+         * setStatus
+         *
+         * @param int $status - 
+         *
+         * @return object(Response)
+         */
         public function setStatus($status)
         {
             if (is_integer($status))
                 $this->status = $status;
-
             return $this;
         }
 
+        /**
+         * useHttp10
+         *
+         * @return object(Response)
+         */
         public function useHttp10()
         {
             if (function_exists('apache_setenv')) {
-                apache_setenv('downgrade-1.0','true');
-                apache_setenv('force-response-1.0','true');
+                apache_setenv('downgrade-1.0', 'true');
+                apache_setenv('force-response-1.0', 'true');
             }
             $this->use10 = true;
-
             return $this;
         }
 
+        /**
+         * useHttp11
+         *
+         * @return object(Response)
+         */
         public function useHttp11()
         {
             if (function_exists('apache_setenv')) {
-                apache_setenv('downgrade-1.0','false');
-                apache_setenv('force-response-1.0','false');
+                apache_setenv('downgrade-1.0', 'false');
+                apache_setenv('force-response-1.0', 'false');
             }
             $this->use10 = false;
-
             return $this;
         }
     };
