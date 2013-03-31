@@ -49,4 +49,3 @@ Dependencies (if you want to install without composer)
 -----
 
 * [Paris](https://github.com/j4mie/paris)
-* [Toro](https://github.com/anandkunal/ToroPHP)

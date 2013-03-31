@@ -1,14 +1,49 @@
 <?php
-class post extends Model
-{
-    public static $_table = 'posts';
-    public static $_id_column = 'ID';
+/**
+ * Unamed - a WordPress replacement
+ *
+ * @category CMS
+ * @package  Unamed
+ * @author   Shane Logsdon <shane.a.logsdon@gmail.com>
+ * @license  MIT http://mit.edu/
+ * @link     http://bitbucket.org/slogsdon/unamed
+ */
 
-    public function __construct() {}
-    public function Post() {return $this->__construct();}
-
-    public function postmeta()
+namespace Unamed\Models {
+    /**
+     * Post
+     *
+     * @category Model
+     * @package  Unamed
+     * @author   Shane Logsdon <shane.a.logsdon@gmail.com>
+     * @license  MIT http://mit.edu/
+     * @link     http://bitbucket.org/slogsdon/unamed
+     * @since    1.0
+     */
+    class Post extends \Model
     {
-        return $this->has_many('Postmeta', 'post_id')->find_many();
-    }
-};
+        /* Properties */
+        public static $_table = 'posts'; // leading _ because of Paris
+        public static $_id_column = 'ID'; // leading _ because of Paris
+
+        /* Methods */
+        /**
+         * __construct
+         */
+        public function __construct() 
+        {
+        }
+
+        /**
+         * postmeta
+         *
+         * links meta table to posts table
+         *
+         * @return object(ORM)
+         */
+        public function postmeta()
+        {
+            return $this->has_many('Postmeta', 'post_id')->find_many();
+        }
+    };
+}

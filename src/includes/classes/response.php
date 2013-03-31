@@ -10,17 +10,19 @@
  */
 
 namespace Unamed\FrontController;
+use Unamed\Interfaces;
 {
     /**
-     * Response
+     * Response implementation
      *
      * @category Class
      * @package  Unamed
      * @author   Shane Logsdon <shane.a.logsdon@gmail.com>
      * @license  MIT http://mit.edu/
      * @link     http://bitbucket.org/slogsdon/unamed
+     * @since    1.0
      */
-    class Response
+    class Response implements Interfaces\Response
     {
         /* Constants */
         const DEFAULT_STATUS = 200;
@@ -76,7 +78,6 @@ namespace Unamed\FrontController;
                     isset($header['replace']) ? $header['replace'] : true
                 );
             }
-
             return $this;
         }
 
@@ -86,7 +87,7 @@ namespace Unamed\FrontController;
          * @param string          $request - 
          * @param callback|string $data    - 
          *
-         * @return object(Response)
+         * @return nothing
          */
         public function deliver($request, $data)
         {

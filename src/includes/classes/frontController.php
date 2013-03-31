@@ -17,11 +17,12 @@ use Unamed\Interfaces;
      *
      * these methods mainly act as helper functions
      *
-     * @category Class
+     * @category FrontController
      * @package  Unamed
      * @author   Shane Logsdon <shane.a.logsdon@gmail.com>
      * @license  MIT http://mit.edu/
      * @link     http://bitbucket.org/slogsdon/unamed
+     * @since    1.0
      */
     class FrontController implements Interfaces\FrontController
     {
@@ -68,7 +69,7 @@ use Unamed\Interfaces;
          */
         public function dispatch()
         {
-            $data = $this->router->getData();
+            $data = $this->router->getData();;
             $c = $data->controller;
             $ref = new $c($data->params);
             $a = $data->action;

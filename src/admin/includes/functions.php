@@ -1,14 +1,18 @@
 <?php
 
-function admin_assets_url()
+function getAdminAssetsUrl()
 {
     $path = '/' . str_replace(DS, '/', ADMIN_DIR) . 'assets/';
-    echo $path;
+    return $path;
+}
 
+function adminAssetsUrl()
+{
+    echo getAdminAssetsUrl();;
     return;
 }
 
-function admin_url()
+function adminUrl()
 {
     $path = '/' . str_replace(DS, '/', ADMIN_DIR);
     echo $path;
@@ -16,23 +20,55 @@ function admin_url()
     return;
 }
 
-function register_style( $handle, $src = '', $deps = array(), $ver = false, $media = false )
+function getAdminHead() 
+{
+    echo '<link href="' . getAdminAssetsUrl() 
+        . 'css/lava.css" rel="stylesheet" type="text/css" />'
+        . '<link href="' . getAdminAssetsUrl() 
+        . 'css/admin.css" rel="stylesheet" type="text/css" />';
+    return;
+}
+
+function getAdminFoot() 
+{
+    echo '<script src="' . getAdminAssetsUrl() 
+        . 'js/jquery.min.js" type="text/javascript"></script>'
+        . '<script src="' . getAdminAssetsUrl() 
+        . 'js/admin.js" type="text/javascript"></script>';
+    return;
+}
+
+function getHeader()
+{
+    if (file_exists(BASE_DIR . ADMIN_DIR . 'templates/header.php'))
+        include_once BASE_DIR . ADMIN_DIR . 'templates/header.php';
+    return;
+}
+
+function getFooter()
+{
+    if (file_exists(BASE_DIR . ADMIN_DIR . 'templates/footer.php'))
+        include_once BASE_DIR . ADMIN_DIR . 'templates/footer.php';
+    return;
+}
+
+function registerStyle( $handle, $src = '', $deps = array(), $ver = false, $media = false )
 {
     global $un;
 
 }
 
-function enqueue_style( $handle, $src = '', $deps = array(), $ver = false, $media = false )
+function enqueueStyle( $handle, $src = '', $deps = array(), $ver = false, $media = false )
 {
     global $un;
 }
 
-function register_script( $handle, $src = '', $deps = array(), $ver = false, $in_footer = true )
+function registerScript( $handle, $src = '', $deps = array(), $ver = false, $in_footer = true )
 {
     global $un;
 }
 
-function enqueue_script( $handle, $src = '', $deps = array(), $ver = false, $in_footer = true )
+function enqueueScript( $handle, $src = '', $deps = array(), $ver = false, $in_footer = true )
 {
     global $un;
 }

@@ -11,7 +11,7 @@
 <!-- End Structure -->
 <!-- Begin Javascript -->
 <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>-->
-<?php get_admin_foot();?>
+<?php getAdminFoot();?>
 <!-- End Javascript -->
 </body>
 </html>

@@ -10,17 +10,19 @@
  */
 
 namespace Unamed\FrontController;
+use Unamed\Interfaces;
 {
     /**
-     * Request
+     * Request Implementation
      *
      * @category Class
      * @package  Unamed
      * @author   Shane Logsdon <shane.a.logsdon@gmail.com>
      * @license  MIT http://mit.edu/
      * @link     http://bitbucket.org/slogsdon/unamed
+     * @since    1.0
      */
-    class Request
+    class Request implements Interfaces\Request
     {
         /* Constants */
         const DEFAULT_METHOD = 'GET';

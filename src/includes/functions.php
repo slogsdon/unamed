@@ -1,53 +1,103 @@
 <?php
+/**
+ * Unamed - a WordPress replacement
+ *
+ * Functions to make theme and plugin developers' lives easier if they choose
+ * to use these
+ *
+ * @category CMS
+ * @package  Unamed
+ * @author   Shane Logsdon <shane.a.logsdon@gmail.com>
+ * @license  MIT http://mit.edu/
+ * @link     http://bitbucket.org/slogsdon/unamed
+ */
 
+/**
+ * enqueue
+ *
+ * @param string   $hook   - 
+ * @param callback $action -
+ *
+ * @return nothing
+ */
 function enqueue($hook, $action)
 {
     global $un;
     $un->enqueue($hook, $action);
+    return;
 }
 
+/**
+ * execute
+ *
+ * @param string $hook - 
+ *
+ * @return nothing
+ */
 function execute($hook)
 {
     global $un;
     $un->execute($hook);
+    return;
 }
 
-// theme functions
-function get_after_body()
+/**
+ * getAfterBody
+ *
+ * @return nothing
+ */
+function getAfterBody()
 {
-    execute('after_body');
+    execute('afterBody');
+    return;
 }
 
-function get_header()
+/**
+ * enqueue
+ *
+ * @return nothing
+ */
+function getHeader()
 {
     global $un;
     if (file_exists(THEMES_DIR . $un->options->theme . '/header.php')) {
         include THEMES_DIR . $un->options->theme . '/header.php';
     }
-
     return;
 }
 
-function get_footer()
+/**
+ * getFooter
+ *
+ * @return nothing
+ */
+function getFooter()
 {
     global $un;
     if (file_exists('./themes/' . $un->options->theme . '/footer.php')) {
         include THEMES_DIR . $un->options->theme . '/footer.php';
     }
-
     return;
 }
 
-function the_posts()
+/**
+ * thePosts
+ *
+ * @return array(Post)
+ */
+function thePosts()
 {
     global $un;
-
-    return $un->the_posts();
+    return $un->thePosts();
 }
 
-function has_posts()
+/**
+ * hasPosts
+ *
+ * @return bool
+ */
+function hasPosts()
 {
     global $un;
-
-    return $un->has_posts();
+    return $un->hasPosts();
 }

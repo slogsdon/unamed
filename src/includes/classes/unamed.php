@@ -35,7 +35,7 @@ namespace Unamed {
         protected $pageHookRunOrder = array(
             'startup',
             'pluginsLoaded',
-            'setup_theme',
+            'setupTheme',
             'dispatch',
             'postsSelection',
             'templateIncluded',
@@ -490,7 +490,7 @@ namespace Unamed {
             ob_start();
             $this->scripts = new \SplQueue();
             $this->styles = new \SplQueue();
-            $this->execute('post_init');
+            $this->execute('postInit');
             return;
         }
 
@@ -501,9 +501,9 @@ namespace Unamed {
          */
         protected function pluginsLoaded()
         {
-            $this->execute('pre_plugins_loaded');
+            $this->execute('prePluginsLoaded');
             $this->loadPlugins();
-            $this->execute('post_plugins_loaded');
+            $this->execute('postPluginsLoaded');
             return;
         }
 
@@ -514,7 +514,7 @@ namespace Unamed {
          */
         protected function setupTheme()
         {
-            $this->execute('pre_setup_theme');
+            $this->execute('preSetupTheme');
             if (!$this->isAdmin) {
                 $this->theme = new \stdClass();
                 $this->theme->dir = THEMES_DIR . $this->options->theme . DS;
@@ -523,7 +523,7 @@ namespace Unamed {
                     include_once $this->theme->dir . 'functions.php';
                 }
             }
-            $this->execute('post_setup_theme');
+            $this->execute('postSetupTheme');
             return;
         }
 
@@ -534,9 +534,9 @@ namespace Unamed {
          */
         protected function dispatch()
         {
-            $this->execute('pre_dispatch');
+            $this->execute('preDispatch');
             $this->fc->dispatch();
-            $this->execute('post_dispatch');
+            $this->execute('postDispatch');
             return;
         }
 
@@ -547,15 +547,15 @@ namespace Unamed {
          */
         protected function templateIncluded()
         {
-            $this->execute('pre_template_included');
+            $this->execute('preTemplateIncluded');
             if (!$this->isAdmin) {
-                if ($this->theme->has['homepage'] && $this->is_home()) {
+                if ($this->theme->has['homepage'] && $this->isHome()) {
                     include_once $this->theme->dir . 'homepage.php';
                 }
             } else {
-                include_once INCLUDES_DIR . 'frontend.php';
+                include_once BASE_DIR . ADMIN_DIR . 'templates/admin.php';
             }
-            $this->execute('post_template_included');
+            $this->execute('postTemplateIncluded');
             return;
         }
 

@@ -1,10 +1,21 @@
 <?php
+/**
+ * Unamed - a WordPress replacement
+ *
+ * Contains basic user-configurable settings
+ *
+ * @category CMS
+ * @package  Unamed
+ * @author   Shane Logsdon <shane.a.logsdon@gmail.com>
+ * @license  MIT http://mit.edu/
+ * @link     http://bitbucket.org/slogsdon/unamed
+ */
 
 // Database
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'shanelogsdon_com');
 define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_PASS', 'root');
 define('DB_LOGGING', true);
 
 define('ENABLE_CACHE', true);
@@ -12,6 +23,7 @@ define('ENABLE_PAGE_CACHE', false);
 
 // Directories
 define('DS', '/');
+define('BASE_DIR', rtrim($_SERVER['DOCUMENT_ROOT'], '/') . DS);
 define('INCLUDES_DIR', 'includes' . DS);
 
 define('ADMIN_DIR', 'admin' . DS);

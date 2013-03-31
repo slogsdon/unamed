@@ -20,6 +20,7 @@ namespace Unamed {
      * @author   Shane Logsdon <shane.a.logsdon@gmail.com>
      * @license  MIT http://mit.edu/
      * @link     http://bitbucket.org/slogsdon/unamed
+     * @since    1.0
      */
     class Cache
     {

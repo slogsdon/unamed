@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>Unamed</title>
     <!-- Begin CSS -->
-    <?php get_admin_head();?>
+    <?php getAdminHead();?>
     <!-- End CSS -->
 </head>
 <body class="lava">
@@ -16,10 +16,10 @@
                 <nav class="user">
                     <ul>
                         <li>
-                            <a href="<?php admin_url();?>users/edit/:id"><span>admin</span></a>
+                            <a href="<?php adminUrl();?>users/edit/:id"><span>admin</span></a>
                             <ul>
-                                <li><a href="<?php admin_url();?>users/edit/:id"><span>edit</span></a></li>
-                                <li><a href="<?php admin_url();?>users/logout"><span>log out</span></a></li>
+                                <li><a href="<?php adminUrl();?>users/edit/:id"><span>edit</span></a></li>
+                                <li><a href="<?php adminUrl();?>users/logout"><span>log out</span></a></li>
                             </ul>
                         </li>
                     </ul>
@@ -30,12 +30,12 @@
             <div class="inside">
                 <nav class="main">
                     <ul>
-                        <li><a href="<?php admin_url();?>"><span>Overview</span></a></li>
-                        <li><a href="<?php admin_url();?>posts"><span>Posts</span></a></li>
-                        <li><a href="<?php admin_url();?>plugins"><span>Plugins</span></a></li>
-                        <li><a href="<?php admin_url();?>themes"><span>Themes</span></a></li>
-                        <li><a href="<?php admin_url();?>users"><span>Users</span></a></li>
-                        <li><a href="<?php admin_url();?>settings"><span>Settings</span></a></li>
+                        <li><a href="<?php adminUrl();?>"><span>Overview</span></a></li>
+                        <li><a href="<?php adminUrl();?>posts"><span>Posts</span></a></li>
+                        <li><a href="<?php adminUrl();?>plugins"><span>Plugins</span></a></li>
+                        <li><a href="<?php adminUrl();?>themes"><span>Themes</span></a></li>
+                        <li><a href="<?php adminUrl();?>users"><span>Users</span></a></li>
+                        <li><a href="<?php adminUrl();?>settings"><span>Settings</span></a></li>
                     </ul>
                 </nav>
             </div>
