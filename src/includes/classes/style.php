@@ -22,12 +22,12 @@ namespace Unamed {
      */
     class Style
     {
-        protected $handle = null;
-        protected $src = null;
-        protected $deps = null;
-        protected $ver = null;
-        protected $media = null;
-        protected $enable = null;
+        public $handle = null;
+        public $src = null;
+        public $deps = null;
+        public $ver = null;
+        public $media = null;
+        public $enabled = null;
 
         /**
          * __construct
@@ -47,7 +47,7 @@ namespace Unamed {
             $deps,
             $ver, 
             $media, 
-            $enable
+            $enabled
         ) {
             $this->handle = $handle;
             $this->src = $src;

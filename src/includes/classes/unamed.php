@@ -407,16 +407,37 @@ namespace Unamed {
             $ver = false, 
             $media = false
         ) {
-            $this->styles->enqueue(
-                new Style(
-                    $handle,
-                    $src,
-                    $deps,
-                    $ver,
-                    $media,
-                    false
-                )
-            );
+            $styles = new \SplQueue();
+            while (!$this->styles->isEmpty())
+            {
+                $style = $this->styles->dequeue();
+                if ($style->handle === $handle) {
+                    if ($src !== '')
+                        $style->src = $src;
+                    if ($deps !== array())
+                        $style->deps = $deps;
+                    if ($ver !== false)
+                        $style->ver = $ver;
+                    if ($media !== false)
+                        $style->media = $media;
+                    $style->enabled = false;
+                }
+                else
+                {
+                    $this->styles->enqueue(
+                        new Style(
+                            $handle,
+                            $src,
+                            $deps,
+                            $ver,
+                            $media,
+                            false
+                        )
+                    );
+                }
+                $styles->enqueue($style);
+            }
+            $this->styles = $styles;
         }
 
         /**
@@ -437,6 +458,56 @@ namespace Unamed {
             $ver = false, 
             $media = false
         ) {
+            $styles = new \SplQueue();
+            while (!$this->styles->isEmpty())
+            {
+                $style = $this->styles->dequeue();
+                if ($style->handle === $handle) {
+                    if ($src !== '')
+                        $style->src = $src;
+                    if ($deps !== array())
+                        $style->deps = $deps;
+                    if ($ver !== false)
+                        $style->ver = $ver;
+                    if ($media !== false)
+                        $style->media = $media;
+                    $style->enabled = true;
+                }
+                else
+                {
+                    $this->styles->enqueue(
+                        new Style(
+                            $handle,
+                            $src,
+                            $deps,
+                            $ver,
+                            $media,
+                            true
+                        )
+                    );
+                }
+                $styles->enqueue($style);
+            }
+            $this->styles = $styles;
+        }
+
+        /**
+         * getStyles
+         *
+         * Gets enabled styles based on 
+         *
+         * @return nothing
+         */
+        public function getStyles()
+        {
+            $styles = new \SplQueue();
+            while (!$this->styles->isEmpty())
+            {
+                $style = $this->styles->dequeue();
+                if ($style->enabled) 
+                    $styles->enqueue($style); 
+            }
+            return $styles;
         }
 
         /**
@@ -457,16 +528,37 @@ namespace Unamed {
             $ver = false, 
             $inFooter = true
         ) {
-            $this->scripts->enqueue(
-                new Script(
-                    $handle,
-                    $src,
-                    $deps,
-                    $ver,
-                    $inFooter,
-                    false
-                )
-            );
+            $scripts = new \SplQueue();
+            while (!$this->scripts->isEmpty())
+            {
+                $script = $this->scripts->dequeue();
+                if ($script->handle === $handle) {
+                    if ($src !== '')
+                        $style->src = $src;
+                    if ($deps !== array())
+                        $style->deps = $deps;
+                    if ($ver !== false)
+                        $style->ver = $ver;
+                    if ($inFooter !== false)
+                        $script->inFooter = $inFooter;
+                    $script->enabled = false;
+                }
+                else
+                {
+                    $this->scripts->enqueue(
+                        new Script(
+                            $handle,
+                            $src,
+                            $deps,
+                            $ver,
+                            $inFooter,
+                            false
+                        )
+                    );
+                }
+                $scripts->enqueue($script);
+            }
+            $this->scripts = $scripts;
         }
 
         /**
@@ -487,6 +579,37 @@ namespace Unamed {
             $ver = false, 
             $inFooter = true
         ) {
+            $scripts = new \SplQueue();
+            while (!$this->scripts->isEmpty())
+            {
+                $script = $this->scripts->dequeue();
+                if ($script->handle === $handle) {
+                    if ($src !== '')
+                        $style->src = $src;
+                    if ($deps !== array())
+                        $style->deps = $deps;
+                    if ($ver !== false)
+                        $style->ver = $ver;
+                    if ($inFooter !== false)
+                        $script->inFooter = $inFooter;
+                    $script->enabled = true;
+                }
+                else
+                {
+                    $this->scripts->enqueue(
+                        new Script(
+                            $handle,
+                            $src,
+                            $deps,
+                            $ver,
+                            $inFooter,
+                            true
+                        )
+                    );
+                }
+                $scripts->enqueue($script);
+            }
+            $this->scripts = $scripts;
         }
 
         // Page Hook Methods

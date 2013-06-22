@@ -22,12 +22,12 @@ namespace Unamed {
      */
     class Script
     {
-        protected $handle = null;
-        protected $src = null;
-        protected $deps = null;
-        protected $ver = null;
-        protected $inFooter = null;
-        protected $enable = null;
+        public $handle = null;
+        public $src = null;
+        public $deps = null;
+        public $ver = null;
+        public $inFooter = null;
+        public $enabled = null;
 
         /**
          * __construct
@@ -47,14 +47,14 @@ namespace Unamed {
             $deps,
             $ver, 
             $inFooter, 
-            $enable
+            $enabled
         ) {
             $this->handle = $handle;
             $this->src = $src;
             $this->deps = $deps;
             $this->ver = $ver;
             $this->inFooter = $inFooter;
-            $this->enable = $enable;
+            $this->enabled = $enable;
         }
     };
 }

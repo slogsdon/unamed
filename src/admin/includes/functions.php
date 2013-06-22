@@ -22,10 +22,21 @@ function adminUrl()
 
 function getAdminHead() 
 {
-    echo '<link href="' . getAdminAssetsUrl() 
-        . 'css/lava.css" rel="stylesheet" type="text/css" />'
-        . '<link href="' . getAdminAssetsUrl() 
-        . 'css/admin.css" rel="stylesheet" type="text/css" />';
+    // echo '<link href="' . getAdminAssetsUrl() 
+    //     . 'css/lava.css" rel="stylesheet" type="text/css" />'
+    //     . '<link href="' . getAdminAssetsUrl() 
+    //     . 'css/admin.css" rel="stylesheet" type="text/css" />';
+    global $un;
+    $html = '';
+    foreach ($un->getStyles() as $style)
+    {
+        $html .= '<link href="' . $style->src . '"'
+              . ' rel="stylesheet"'
+              . ' type="text/css"'
+              . (!$style->media ? '' : 'media="' . $style->media . '"')
+              . ' />' . "\n";
+    }
+    echo $html;
     return;
 }
 
@@ -68,20 +79,23 @@ function getContent()
 function registerStyle( $handle, $src = '', $deps = array(), $ver = false, $media = false )
 {
     global $un;
-
+    $un->registerStyle($handle, $src, $deps, $ver, $media);
 }
 
 function enqueueStyle( $handle, $src = '', $deps = array(), $ver = false, $media = false )
 {
     global $un;
+    $un->enqueueStyle($handle, $src, $deps, $ver, $media);
 }
 
 function registerScript( $handle, $src = '', $deps = array(), $ver = false, $in_footer = true )
 {
     global $un;
+    $un->registerScript($handle, $src, $deps, $ver, $in_footer);
 }
 
 function enqueueScript( $handle, $src = '', $deps = array(), $ver = false, $in_footer = true )
 {
     global $un;
+    $un->enqueueScript($handle, $src, $deps, $ver, $in_footer);
 }
