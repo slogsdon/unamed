@@ -54,7 +54,7 @@ namespace Unamed {
             $this->deps = $deps;
             $this->ver = $ver;
             $this->media = $media;
-            $this->enable = $enable;
+            $this->enabled = $enabled;
         }
     };
 }

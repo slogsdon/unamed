@@ -41,6 +41,7 @@ namespace Unamed {
             'templateIncluded',
             'shutdown',
         );
+        protected $runHooks = array();
         protected $post_types = array(
             'post' => array(
                 'public' => true,
@@ -424,7 +425,7 @@ namespace Unamed {
                 }
                 else
                 {
-                    $this->styles->enqueue(
+                    $styles->enqueue(
                         new Style(
                             $handle,
                             $src,
@@ -459,6 +460,19 @@ namespace Unamed {
             $media = false
         ) {
             $styles = new \SplQueue();
+
+            if ($this->styles->isEmpty())
+                $this->styles->enqueue(
+                    new Style(
+                        $handle,
+                        $src,
+                        $deps,
+                        $ver,
+                        $media,
+                        true
+                    )
+                );
+            
             while (!$this->styles->isEmpty())
             {
                 $style = $this->styles->dequeue();
@@ -488,6 +502,7 @@ namespace Unamed {
                 }
                 $styles->enqueue($style);
             }
+
             $this->styles = $styles;
         }
 
@@ -500,6 +515,7 @@ namespace Unamed {
          */
         public function getStyles()
         {
+
             $styles = new \SplQueue();
             while (!$this->styles->isEmpty())
             {
@@ -545,7 +561,7 @@ namespace Unamed {
                 }
                 else
                 {
-                    $this->scripts->enqueue(
+                    $scripts->enqueue(
                         new Script(
                             $handle,
                             $src,
@@ -596,7 +612,7 @@ namespace Unamed {
                 }
                 else
                 {
-                    $this->scripts->enqueue(
+                    $scripts->enqueue(
                         new Script(
                             $handle,
                             $src,
@@ -626,6 +642,7 @@ namespace Unamed {
             $this->scripts = new \SplQueue();
             $this->styles = new \SplQueue();
             $this->execute('postInit');
+            $this->runHooks[] = 'init';
             return;
         }
 
@@ -639,6 +656,7 @@ namespace Unamed {
             $this->execute('prePluginsLoaded');
             $this->loadPlugins();
             $this->execute('postPluginsLoaded');
+            $this->runHooks[] = 'pluginsLoaded';
             return;
         }
 
@@ -659,6 +677,7 @@ namespace Unamed {
                 }
             }
             $this->execute('postSetupTheme');
+            $this->runHooks[] = 'setupTheme';
             return;
         }
 
@@ -672,6 +691,7 @@ namespace Unamed {
             $this->execute('preDispatch');
             $this->fc->dispatch();
             $this->execute('postDispatch');
+            $this->runHooks[] = 'dispatch';
             return;
         }
 
@@ -691,6 +711,7 @@ namespace Unamed {
                 include_once BASE_DIR . ADMIN_DIR . 'templates/admin.php';
             }
             $this->execute('postTemplateIncluded');
+            $this->runHooks[] = 'templateIncluded';
             return;
         }
 
@@ -703,7 +724,7 @@ namespace Unamed {
          */
         protected function deliver()
         {
-            $this->execute('pre_deliver');
+            $this->execute('preDeliver');
             $buffer = ob_get_clean();
             $config = array(
                 'indent' => true,
@@ -720,7 +741,8 @@ namespace Unamed {
                 Cache::add($this->cacheKey, (string) $tidy);
             }
             $this->fc->deliver($tidy);
-            $this->execute('post_deliver');
+            $this->execute('postDeliver');
+            $this->runHooks[] = 'deliver';
             return;
         }
     };

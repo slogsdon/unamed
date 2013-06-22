@@ -8,7 +8,7 @@ function getAdminAssetsUrl()
 
 function adminAssetsUrl()
 {
-    echo getAdminAssetsUrl();;
+    echo getAdminAssetsUrl();
     return;
 }
 
