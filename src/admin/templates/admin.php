@@ -1,3 +1,3 @@
 <?php getHeader();?>
-    <?php //include 'content.php';?>
+   <?php getContent();?>
 <?php getFooter(); ?>

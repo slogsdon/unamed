@@ -1,0 +1,1 @@
+<div>posts view</div>

@@ -52,6 +52,19 @@ function getFooter()
     return;
 }
 
+function getContent()
+{
+    global $un;
+    $data = $un->getRouteData();
+    $controller = explode("\\", $data->controller);
+    $base = BASE_DIR . ADMIN_DIR . 'templates/' . $controller[count($controller) - 1];
+    if (file_exists($base . '.' . $data->action . '.php'))
+        include_once $base . '.' . $data->action . '.php';
+    else if (file_exists($base . '.php'))
+        include_once $base . '.php';
+    return;
+}
+
 function registerStyle( $handle, $src = '', $deps = array(), $ver = false, $media = false )
 {
     global $un;

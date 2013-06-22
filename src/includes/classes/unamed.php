@@ -257,6 +257,18 @@ namespace Unamed {
         }
 
         /**
+         * getRouteData
+         *
+         * gets route data from front controller
+         *
+         * @return array
+         */
+        public function getRouteData()
+        {
+            return $this->fc->router->getData();
+        }
+
+        /**
          * getOption
          *
          * grabs a specific option value from db

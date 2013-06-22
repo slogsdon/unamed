@@ -17,6 +17,10 @@ html, body, .wrapper {
 	padding-right: 10px;
 }
 
+#content .inside {
+	padding-top: 2em;
+}
+
 div.inside {
 	height: 100%;
 	width: 100%;

@@ -1,7 +1,7 @@
 <?php
 
-namespace Unamed\Controllers {
-    class Admin_Overview
+namespace Unamed\Controllers\Admin {
+    class Overview
     {
         protected $params = array();
         public function __construct(array $params = array())
@@ -9,7 +9,7 @@ namespace Unamed\Controllers {
             $this->params = $params;
         }
     };
-    class Admin_Posts
+    class Posts
     {
         protected $params = array();
         public function __construct(array $params = array())
@@ -17,7 +17,7 @@ namespace Unamed\Controllers {
             $this->params = $params;
         }
     };
-    class Admin_Plugins
+    class Plugins
     {
         protected $params = array();
         public function __construct(array $params = array())
@@ -25,7 +25,7 @@ namespace Unamed\Controllers {
             $this->params = $params;
         }
     };
-    class Admin_Themes
+    class Themes
     {
         protected $params = array();
         public function __construct(array $params = array())
@@ -33,7 +33,7 @@ namespace Unamed\Controllers {
             $this->params = $params;
         }
     };
-    class Admin_Settings
+    class Settings
     {
         protected $params = array();
         public function __construct(array $params = array())
@@ -44,7 +44,7 @@ namespace Unamed\Controllers {
         {
         }
     };
-    class Admin_Users
+    class Users
     {
         protected $params = array();
         public function __construct(array $params = array())
