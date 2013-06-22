@@ -409,6 +409,19 @@ namespace Unamed {
             $media = false
         ) {
             $styles = new \SplQueue();
+
+            if ($this->styles->isEmpty())
+                $this->styles->enqueue(
+                    new Style(
+                        $handle,
+                        $src,
+                        $deps,
+                        $ver,
+                        $media,
+                        false
+                    )
+                );
+            
             while (!$this->styles->isEmpty())
             {
                 $style = $this->styles->dequeue();
@@ -425,7 +438,7 @@ namespace Unamed {
                 }
                 else
                 {
-                    $styles->enqueue(
+                    $this->styles->enqueue(
                         new Style(
                             $handle,
                             $src,
@@ -438,6 +451,7 @@ namespace Unamed {
                 }
                 $styles->enqueue($style);
             }
+
             $this->styles = $styles;
         }
 
@@ -511,7 +525,7 @@ namespace Unamed {
          *
          * Gets enabled styles based on 
          *
-         * @return nothing
+         * @return SplQueue
          */
         public function getStyles()
         {
@@ -542,27 +556,40 @@ namespace Unamed {
             $src = '', 
             $deps = array(), 
             $ver = false, 
-            $inFooter = true
+            $inFooter = false
         ) {
             $scripts = new \SplQueue();
+
+            if ($this->scripts->isEmpty())
+                $this->scripts->enqueue(
+                    new Style(
+                        $handle,
+                        $src,
+                        $deps,
+                        $ver,
+                        $inFooter,
+                        false
+                    )
+                );
+            
             while (!$this->scripts->isEmpty())
             {
                 $script = $this->scripts->dequeue();
                 if ($script->handle === $handle) {
                     if ($src !== '')
-                        $style->src = $src;
+                        $script->src = $src;
                     if ($deps !== array())
-                        $style->deps = $deps;
+                        $script->deps = $deps;
                     if ($ver !== false)
-                        $style->ver = $ver;
+                        $script->ver = $ver;
                     if ($inFooter !== false)
                         $script->inFooter = $inFooter;
                     $script->enabled = false;
                 }
                 else
                 {
-                    $scripts->enqueue(
-                        new Script(
+                    $this->scripts->enqueue(
+                        new Style(
                             $handle,
                             $src,
                             $deps,
@@ -574,6 +601,7 @@ namespace Unamed {
                 }
                 $scripts->enqueue($script);
             }
+
             $this->scripts = $scripts;
         }
 
@@ -593,27 +621,40 @@ namespace Unamed {
             $src = '', 
             $deps = array(), 
             $ver = false, 
-            $inFooter = true
+            $inFooter = false
         ) {
             $scripts = new \SplQueue();
+
+            if ($this->scripts->isEmpty())
+                $this->scripts->enqueue(
+                    new Style(
+                        $handle,
+                        $src,
+                        $deps,
+                        $ver,
+                        $inFooter,
+                        true
+                    )
+                );
+            
             while (!$this->scripts->isEmpty())
             {
                 $script = $this->scripts->dequeue();
                 if ($script->handle === $handle) {
                     if ($src !== '')
-                        $style->src = $src;
+                        $script->src = $src;
                     if ($deps !== array())
-                        $style->deps = $deps;
+                        $script->deps = $deps;
                     if ($ver !== false)
-                        $style->ver = $ver;
+                        $script->ver = $ver;
                     if ($inFooter !== false)
                         $script->inFooter = $inFooter;
                     $script->enabled = true;
                 }
                 else
                 {
-                    $scripts->enqueue(
-                        new Script(
+                    $this->scripts->enqueue(
+                        new Style(
                             $handle,
                             $src,
                             $deps,
@@ -625,7 +666,35 @@ namespace Unamed {
                 }
                 $scripts->enqueue($script);
             }
+
             $this->scripts = $scripts;
+        }
+
+        /**
+         * getScripts
+         *
+         * Gets enabled scripts based on 
+         *
+         * @param bool $inFooter - default true
+         *
+         * @return SplQueue
+         */
+        public function getScripts($inFooter = true)
+        {
+            $scripts = new \SplQueue();
+            $otherEnabledScripts = new \SplQueue();
+            while (!$this->scripts->isEmpty())
+            {
+                $script = $this->scripts->dequeue();
+                if ($script->enabled) 
+                {
+                    if ($script->inFooter === $inFooter) 
+                        $scripts->enqueue($script); 
+                    else
+                        $otherEnabledScripts->enqueue($script);
+                }
+            }
+            return $scripts;
         }
 
         // Page Hook Methods

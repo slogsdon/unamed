@@ -6,10 +6,10 @@ namespace Unamed\Controllers\Admin {
         public function __construct()
         {
             global $un;
-            $un->enqueueScript('jquery', '/admin/assets/js/jquery.min.js');
-            $un->enqueueScript('admin', '/admin/assets/js/admin.js');
-            $un->enqueueStyle('lava', '/admin/assets/css/lava.css');
-            $un->enqueueStyle('admin', '/admin/assets/css/admin.css');
+            $un->enqueueScript('jquery', getAdminAssetsUrl() . 'js/jquery.min.js');
+            $un->enqueueScript('admin', getAdminAssetsUrl() . 'js/admin.js');
+            $un->enqueueStyle('lava', getAdminAssetsUrl() . 'css/lava.css');
+            $un->enqueueStyle('admin', getAdminAssetsUrl() . 'css/admin.css');
         }
     };
     class Overview extends Base

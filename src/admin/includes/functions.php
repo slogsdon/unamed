@@ -22,19 +22,19 @@ function adminUrl()
 
 function getAdminHead() 
 {
-    // echo '<link href="' . getAdminAssetsUrl() 
-    //     . 'css/lava.css" rel="stylesheet" type="text/css" />'
-    //     . '<link href="' . getAdminAssetsUrl() 
-    //     . 'css/admin.css" rel="stylesheet" type="text/css" />';
     global $un;
     $html = '';
     foreach ($un->getStyles() as $style)
     {
-        $html .= '<link href="' . $style->src . '"'
-              . ' rel="stylesheet"'
-              . ' type="text/css"'
-              . (!$style->media ? '' : 'media="' . $style->media . '"')
-              . ' />' . "\n";
+        $html .= '<link href="' . $style->src . '" '
+              . 'rel="stylesheet" '
+              . 'type="text/css" '
+              . (!$style->media ? '' : 'media="' . $style->media . '" ')
+              . '/>' . "\n";
+    }
+    foreach ($un->getScripts(false) as $script) {
+        $html .= '<script type="text/javascript" '
+              . 'src="' . $script->src . '"></script>' . "\n";
     }
     echo $html;
     return;
@@ -42,10 +42,13 @@ function getAdminHead()
 
 function getAdminFoot() 
 {
-    echo '<script src="' . getAdminAssetsUrl() 
-        . 'js/jquery.min.js" type="text/javascript"></script>'
-        . '<script src="' . getAdminAssetsUrl() 
-        . 'js/admin.js" type="text/javascript"></script>';
+    global $un;
+    $html = '';
+    foreach ($un->getScripts() as $script) {
+        $html .= '<script type="text/javascript" '
+              . 'src="' . $script->src . '"></script>' . "\n";
+    }
+    echo $html;
     return;
 }
 
