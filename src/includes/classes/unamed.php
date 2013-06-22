@@ -33,7 +33,7 @@ namespace Unamed {
         protected $fc = null;
         protected $isAdmin = null;
         protected $pageHookRunOrder = array(
-            'startup',
+            'init',
             'pluginsLoaded',
             'setupTheme',
             'dispatch',

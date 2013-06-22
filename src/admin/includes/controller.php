@@ -5,6 +5,11 @@ namespace Unamed\Controllers\Admin {
     {
         public function __construct()
         {
+            global $un;
+            $un->enqueue('postInit', array($this, 'postInit'));
+        }
+        public function postInit() 
+        {
             enqueueScript('jquery', '/admin/assets/js/jquery.min.js');
             enqueueScript('admin', '/admin/assets/js/admin.js');
             enqueueStyle('lava', '/admin/assets/css/lava.css');
@@ -20,7 +25,7 @@ namespace Unamed\Controllers\Admin {
             parent::__construct();
         }
     };
-    class Posts
+    class Posts extends Base
     {
         protected $params = array();
         public function __construct(array $params = array())
@@ -29,7 +34,7 @@ namespace Unamed\Controllers\Admin {
             parent::__construct();
         }
     };
-    class Plugins
+    class Plugins extends Base
     {
         protected $params = array();
         public function __construct(array $params = array())
@@ -38,7 +43,7 @@ namespace Unamed\Controllers\Admin {
             parent::__construct();
         }
     };
-    class Themes
+    class Themes extends Base
     {
         protected $params = array();
         public function __construct(array $params = array())
@@ -47,7 +52,7 @@ namespace Unamed\Controllers\Admin {
             parent::__construct();
         }
     };
-    class Settings
+    class Settings extends Base
     {
         protected $params = array();
         public function __construct(array $params = array())
@@ -59,7 +64,7 @@ namespace Unamed\Controllers\Admin {
         {
         }
     };
-    class Users
+    class Users extends Base
     {
         protected $params = array();
         public function __construct(array $params = array())
