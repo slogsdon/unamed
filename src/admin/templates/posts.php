@@ -1,1 +1,1 @@
-<div>posts view</div>
+<?php print_r(get_defined_vars());?>

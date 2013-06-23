@@ -51,6 +51,7 @@ namespace Unamed {
         protected $selectedPosts = null;
         protected $styles = null;
         protected $theme = null;
+        protected $viewData = array();
 
         /* Methods */
         /**
@@ -288,6 +289,21 @@ namespace Unamed {
                 $ret = $option->option_value;
             }
             return $ret;
+        }
+
+        /**
+         * setViewData
+         *
+         * sets view data
+         *
+         * @param array $data - data to be passed
+         *
+         * @return object(Unamed)
+         */ 
+        public function setViewData(array $data)
+        {
+            $this->viewData = $data;
+            return $this;
         }
 
         /**
@@ -772,12 +788,20 @@ namespace Unamed {
         protected function templateIncluded()
         {
             $this->execute('preTemplateIncluded');
+            if ($this->viewData !== array()) {
+                foreach ($viewData as $k => $v)
+                    $$k = $v;
+            }
             if (!$this->isAdmin) {
                 if ($this->theme->has['homepage'] && $this->isHome()) {
                     include_once $this->theme->dir . 'homepage.php';
                 }
             } else {
                 include_once BASE_DIR . ADMIN_DIR . 'templates/admin.php';
+            }
+            if ($this->viewData !== array()) {
+                foreach ($viewData as $k => $v)
+                    unset($$k);   
             }
             $this->execute('postTemplateIncluded');
             $this->runHooks[] = 'templateIncluded';

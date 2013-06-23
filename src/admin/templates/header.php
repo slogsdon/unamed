@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <title>Unamed</title>
-    <!-- Begin CSS -->
+    <!-- Begin CSS/JS -->
     <?php getAdminHead();?>
-    <!-- End CSS -->
+    <!-- End CSS/JS -->
 </head>
 <body class="lava">
 <!-- Begin Structure -->
