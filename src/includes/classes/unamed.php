@@ -292,6 +292,18 @@ namespace Unamed {
         }
 
         /**
+         * getViewData
+         *
+         * gets view data
+         *
+         * @return array 
+         */
+        public function getViewData()
+        {
+            return $this->viewData;
+        }
+
+        /**
          * setViewData
          *
          * sets view data
@@ -788,20 +800,12 @@ namespace Unamed {
         protected function templateIncluded()
         {
             $this->execute('preTemplateIncluded');
-            if ($this->viewData !== array()) {
-                foreach ($viewData as $k => $v)
-                    $$k = $v;
-            }
             if (!$this->isAdmin) {
                 if ($this->theme->has['homepage'] && $this->isHome()) {
                     include_once $this->theme->dir . 'homepage.php';
                 }
             } else {
                 include_once BASE_DIR . ADMIN_DIR . 'templates/admin.php';
-            }
-            if ($this->viewData !== array()) {
-                foreach ($viewData as $k => $v)
-                    unset($$k);   
             }
             $this->execute('postTemplateIncluded');
             $this->runHooks[] = 'templateIncluded';

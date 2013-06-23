@@ -69,6 +69,11 @@ function getFooter()
 function getContent()
 {
     global $un;
+    $viewData = $un->getViewData();
+    if ($viewData !== array()) {
+        foreach ($viewData as $k => $v)
+            $$k = $v;
+    }
     $data = $un->getRouteData();
     $controller = explode("\\", $data->controller);
     $base = BASE_DIR . ADMIN_DIR . 'templates/' . $controller[count($controller) - 1];
@@ -76,6 +81,10 @@ function getContent()
         include_once $base . '.' . $data->action . '.php';
     else if (file_exists($base . '.php'))
         include_once $base . '.php';
+    if ($viewData !== array()) {
+        foreach ($viewData as $k => $v)
+            $$k = $v;
+            }
     return;
 }
 
