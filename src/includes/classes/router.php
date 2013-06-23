@@ -164,7 +164,12 @@ use Unamed\Interfaces;
          */
         protected function parse($path, $regex)
         {
-            return preg_match($regex, $path, $this->params);
+            $params = array();
+            $result = preg_match($regex, $path, $params);
+            print_r($params);die();
+            if (count($params))
+                $this->params = $params;
+            return $result;
         }
 
         /**
