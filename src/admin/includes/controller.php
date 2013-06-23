@@ -40,7 +40,7 @@ namespace Unamed\Controllers\Admin {
             //if ($post_types[$this->target_post_type]['public'] == true) {
                 $posts = \Model::factory('Post')->
             //        where('post_type', $this->target_post_type)->
-                    order_by('post_date')->
+            //        order_by('post_date')->
                     find_many();
                 foreach ($posts as $post) {
                     $post->postmeta = $post->postmeta();
