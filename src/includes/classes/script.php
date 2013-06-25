@@ -54,7 +54,7 @@ namespace Unamed {
             $this->deps = $deps;
             $this->ver = $ver;
             $this->inFooter = $inFooter;
-            $this->enabled = $enable;
+            $this->enabled = $enabled;
         }
     };
 }

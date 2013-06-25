@@ -437,19 +437,8 @@ namespace Unamed {
             $media = false
         ) {
             $styles = new \SplQueue();
+            $overwrite = false;
 
-            if ($this->styles->isEmpty())
-                $this->styles->enqueue(
-                    new Style(
-                        $handle,
-                        $src,
-                        $deps,
-                        $ver,
-                        $media,
-                        false
-                    )
-                );
-            
             while (!$this->styles->isEmpty())
             {
                 $style = $this->styles->dequeue();
@@ -463,23 +452,26 @@ namespace Unamed {
                     if ($media !== false)
                         $style->media = $media;
                     $style->enabled = false;
-                }
-                else
-                {
-                    $this->styles->enqueue(
-                        new Style(
-                            $handle,
-                            $src,
-                            $deps,
-                            $ver,
-                            $media,
-                            false
-                        )
-                    );
+                    $overwrite = true;
                 }
                 $styles->enqueue($style);
             }
 
+            if (!$overwrite)
+            {
+                $styles->enqueue(
+                    new Style(
+                        $handle,
+                        $src,
+                        $deps,
+                        $ver,
+                        $media,
+                        false
+                    )
+                );
+            }
+
+            $this->styles = null;
             $this->styles = $styles;
         }
 
@@ -502,19 +494,8 @@ namespace Unamed {
             $media = false
         ) {
             $styles = new \SplQueue();
+            $overwrite = false;
 
-            if ($this->styles->isEmpty())
-                $this->styles->enqueue(
-                    new Style(
-                        $handle,
-                        $src,
-                        $deps,
-                        $ver,
-                        $media,
-                        true
-                    )
-                );
-            
             while (!$this->styles->isEmpty())
             {
                 $style = $this->styles->dequeue();
@@ -528,23 +509,26 @@ namespace Unamed {
                     if ($media !== false)
                         $style->media = $media;
                     $style->enabled = true;
-                }
-                else
-                {
-                    $this->styles->enqueue(
-                        new Style(
-                            $handle,
-                            $src,
-                            $deps,
-                            $ver,
-                            $media,
-                            true
-                        )
-                    );
+                    $overwrite = true;
                 }
                 $styles->enqueue($style);
             }
 
+            if (!$overwrite)
+            {
+                $styles->enqueue(
+                    new Style(
+                        $handle,
+                        $src,
+                        $deps,
+                        $ver,
+                        $media,
+                        true
+                    )
+                );
+            }
+
+            $this->styles = null;
             $this->styles = $styles;
         }
 
@@ -584,22 +568,11 @@ namespace Unamed {
             $src = '', 
             $deps = array(), 
             $ver = false, 
-            $inFooter = false
+            $inFooter = true
         ) {
             $scripts = new \SplQueue();
+            $overwrite = false;
 
-            if ($this->scripts->isEmpty())
-                $this->scripts->enqueue(
-                    new Style(
-                        $handle,
-                        $src,
-                        $deps,
-                        $ver,
-                        $inFooter,
-                        false
-                    )
-                );
-            
             while (!$this->scripts->isEmpty())
             {
                 $script = $this->scripts->dequeue();
@@ -613,23 +586,26 @@ namespace Unamed {
                     if ($inFooter !== false)
                         $script->inFooter = $inFooter;
                     $script->enabled = false;
-                }
-                else
-                {
-                    $this->scripts->enqueue(
-                        new Style(
-                            $handle,
-                            $src,
-                            $deps,
-                            $ver,
-                            $inFooter,
-                            false
-                        )
-                    );
+                    $overwrite = true;
                 }
                 $scripts->enqueue($script);
             }
 
+            if (!$overwrite)
+            {
+                $scripts->enqueue(
+                    new Script(
+                        $handle,
+                        $src,
+                        $deps,
+                        $ver,
+                        $inFooter,
+                        false
+                    )
+                );
+            }
+
+            $this->scripts = null;
             $this->scripts = $scripts;
         }
 
@@ -649,22 +625,11 @@ namespace Unamed {
             $src = '', 
             $deps = array(), 
             $ver = false, 
-            $inFooter = false
+            $inFooter = true
         ) {
             $scripts = new \SplQueue();
+            $overwrite = false;
 
-            if ($this->scripts->isEmpty())
-                $this->scripts->enqueue(
-                    new Style(
-                        $handle,
-                        $src,
-                        $deps,
-                        $ver,
-                        $inFooter,
-                        true
-                    )
-                );
-            
             while (!$this->scripts->isEmpty())
             {
                 $script = $this->scripts->dequeue();
@@ -678,23 +643,26 @@ namespace Unamed {
                     if ($inFooter !== false)
                         $script->inFooter = $inFooter;
                     $script->enabled = true;
-                }
-                else
-                {
-                    $this->scripts->enqueue(
-                        new Style(
-                            $handle,
-                            $src,
-                            $deps,
-                            $ver,
-                            $inFooter,
-                            true
-                        )
-                    );
+                    $overwrite = true;
                 }
                 $scripts->enqueue($script);
             }
 
+            if (!$overwrite)
+            {
+                $scripts->enqueue(
+                    new Script(
+                        $handle,
+                        $src,
+                        $deps,
+                        $ver,
+                        $inFooter,
+                        true
+                    )
+                );
+            }
+
+            $this->scripts = null;
             $this->scripts = $scripts;
         }
 
@@ -722,6 +690,8 @@ namespace Unamed {
                         $otherEnabledScripts->enqueue($script);
                 }
             }
+            $this->scripts = null;
+            $this->scripts = $otherEnabledScripts;
             return $scripts;
         }
 

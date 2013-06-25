@@ -166,8 +166,7 @@ use Unamed\Interfaces;
         {
             $params = array();
             $result = preg_match($regex, $path, $params);
-            print_r($params);die();
-            if (count($params))
+            if ($result === 1 && count($params))
                 $this->params = $params;
             return $result;
         }

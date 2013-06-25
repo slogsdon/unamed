@@ -18,5 +18,4 @@ echo "<!-- This process used " . rutime($ru, $rustart, "utime") .
 echo "<!-- It spent " . rutime($ru, $rustart, "stime") .
     " ms in system calls -->\n";
 echo "<!-- execution time: ".(microtime() - $start)." -->";
-echo "<!--";print_r($ru);echo" -->";
 
