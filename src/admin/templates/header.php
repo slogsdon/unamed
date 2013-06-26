@@ -34,7 +34,23 @@
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
+                                <li>
+                                    <i class="icon-envelope"></i>
+                                    Messages
+                                    <span class="badge badge-important pull-right">4</span>
+                                    <ul class="nav nav-list">
+                                        <li>No Messages</li>
+                                    </ul>
+                                </li>
                                 <li class="divider"></li>
+                                <li>
+                                    <i class="icon-warning-sign"></i>
+                                    Alerts
+                                    <span class="badge badge-important pull-right">2</span>
+                                    <ul class="nav nav-list">
+                                        <li>No Alerts</li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -43,7 +59,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <img src="/" class="img-polaroid" style="width:30px;height:auto;" alt="" />
+                                    <img src="/uploads/admin.jpg" class="img-polaroid" style="margin-left:5px;width:30px;height:auto;" alt="" />
                                     <span>admin</span>
                                 </li>
                                 <li><a href="<?php adminUrl();?>users/edit/:id"><span>edit</span></a></li>
@@ -68,3 +84,4 @@
                 </ul>
             </div>
             <div  id="content" class="span10">
+                <?php getAdminAlerts(); ?>

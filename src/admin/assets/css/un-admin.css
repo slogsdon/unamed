@@ -7,9 +7,30 @@ body {
     min-height: 105px;
 }
 
+.top-notifications-user .dropdown-menu li i {
+    position: relative;
+    top: 3px;
+    margin-left: 5px;
+}
+
+.top-notifications-user .dropdown-menu li .badge {
+    margin-right: 5px;
+}
+
+.top-notifications-user .dropdown-menu .divider {
+    clear: both;
+    position: relative;
+    top: 5px;
+}
+
 .navbar .top-notifications-user .notifications i {
     position: relative;
     top: 2px;
+}
+
+.navbar .top-notifications-user .notifications span {
+    position: relative;
+    top: -2px;
 }
 
 .posts-edit { }

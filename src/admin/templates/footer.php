@@ -5,7 +5,7 @@
         <div id="footer" class="container">
             <div class="row">
                 <div class="span12">
-                    powered by <a href="https://github.com/slogsdon/unamed">unamed</a>
+                    Powered by <a href="https://github.com/slogsdon/unamed">unamed</a>
                 </div>
             </div>
         </div>

@@ -27,7 +27,17 @@
             $('input[name="use-post-excerpt"]').change(function () {
                 $('.post-excerpt-container').slideToggle();
             });
+            $('.post-actions .update').click(function () {
+                $('form').submit();
+            });
         }
+
+        $('.alert').each(function () {
+            var $this = $(this);
+            setTimeout(function () {
+                $this.fadeOut();
+            }, 7000);
+        });
 
 	});
 })(window, document, jQuery);

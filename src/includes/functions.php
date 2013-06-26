@@ -12,6 +12,25 @@
  * @link     http://bitbucket.org/slogsdon/unamed
  */
 
+// set up autoloader
+spl_autoload_register(function ($className) {
+    $tmp = explode("\\", $className);
+    $class = $tmp[count($tmp) - 1];
+    unset($tmp);
+    
+    if (stristr(strtolower($className), 'interfaces'))
+        $file = INTERFACES_DIR . $class . '.php';
+    else if (stristr(strtolower($className), 'controllers'))
+        $file = CONTROLLERS_DIR . $class . '.php';
+    else if (stristr(strtolower($className), 'models'))
+        $file = MODELS_DIR . $class . '.php';
+    else
+        $file = CLASSES_DIR . $class . '.php';
+    
+    if (is_readable($file))
+        require_once $file;
+});
+
 /**
  * enqueue
  *

@@ -19,6 +19,10 @@ namespace Unamed\Controllers\Admin {
             $un->enqueueStyle('un.admin', getAdminAssetsUrl() . 'css/un-admin.css', array('bootstrap'));
             $un->enqueueStyle('bootstrap.responsive', getAdminAssetsUrl() . 'css/bootstrap-responsive.min.css', array('bootstrap'));
         }
+        protected function PostToSql($key)
+        {
+
+        }
     };
     class Overview extends Base
     {
@@ -47,8 +51,33 @@ namespace Unamed\Controllers\Admin {
         {
             global $un;
             $un->enqueueScript('tinymce', '//tinymce.cachefly.net/4.0/tinymce.min.js');
+            $post = $this->getPost($this->params['id']);
+
+            if (count($_POST) > 0)
+            {
+                try 
+                {
+                    $post->UpdateWith($_POST)->save();
+                    $un->addFlashMessage(
+                        array(
+                            'type' => 'success',
+                            'message' => 'The post was updated.'
+                        )
+                    );
+                }
+                catch (Exception $e)
+                {
+                    $un->addFlashMessage(
+                        array(
+                            'type' => 'error',
+                            'message' => 'There was an error updating the post.'
+                        )
+                    );
+                }
+            }
+
             $un->setViewData(
-                array('post' => $this->getPost($this->params['id']))
+                array('post' => $post)
             );
         }
         
@@ -82,8 +111,13 @@ namespace Unamed\Controllers\Admin {
         protected $params = array();
         public function __construct(array $params = array())
         {
+            global $un;
             $this->params = $params;
             parent::__construct();
+
+            $un->setViewData(
+                array('plugins' => $un->plugins)
+            );
         }
     };
     class Themes extends Base
@@ -91,8 +125,13 @@ namespace Unamed\Controllers\Admin {
         protected $params = array();
         public function __construct(array $params = array())
         {
+            global $un;
             $this->params = $params;
             parent::__construct();
+
+            $un->setViewData(
+                array('themes' => $un->themes)
+            );
         }
     };
     class Settings extends Base
@@ -100,11 +139,26 @@ namespace Unamed\Controllers\Admin {
         protected $params = array();
         public function __construct(array $params = array())
         {
+            global $un;
             $this->params = $params;
             parent::__construct();
+
+            $un->setViewData(
+                array('settings' => $this->getSettings())
+            );
         }
         public function edit()
         {
+        }
+
+        private function getSettings()
+        {
+            $result = array();
+            $options = \Model::factory('Option')->find_many();
+            foreach ($options as $option) {
+                $result[$option->option_name] = $option->option_value;
+            }
+            return $result;
         }
     };
     class Users extends Base

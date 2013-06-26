@@ -1,5 +1,23 @@
 <?php
 
+spl_autoload_register(function ($className) {
+    $tmp = explode("\\", $className);
+    $class = $tmp[count($tmp) - 1];
+    unset($tmp);
+    
+    if (stristr(strtolower($className), 'interfaces'))
+        $file = '../' . INTERFACES_DIR . $class . '.php';
+    else if (stristr(strtolower($className), 'controllers'))
+        $file = '../' . CONTROLLERS_DIR . $class . '.php';
+    else if (stristr(strtolower($className), 'models'))
+        $file = '../' . MODELS_DIR . $class . '.php';
+    else
+        $file = '../' . CLASSES_DIR . $class . '.php';
+    
+    if (is_readable($file))
+        require_once $file;
+});
+
 function getAdminAssetsUrl()
 {
     $path = '/' . str_replace(DS, '/', ADMIN_DIR) . 'assets/';
@@ -110,4 +128,16 @@ function enqueueScript( $handle, $src = '', $deps = array(), $ver = false, $in_f
 {
     global $un;
     $un->enqueueScript($handle, $src, $deps, $ver, $in_footer);
+}
+
+function getAdminAlerts()
+{
+    global $un;
+    $messages = $un->getFlashMessages();
+    foreach ($messages as $message)
+    {
+        echo '<div class="alert alert-' . $message['type'] . '">' 
+            . '<button type="button" class="close" data-dismiss="alert">×</button>'
+            . $message['message'] . '</div>' . "\n";
+    }
 }

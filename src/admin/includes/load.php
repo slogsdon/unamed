@@ -2,19 +2,6 @@
 
 require_once '../'. VENDOR_DIR . 'autoload.php';
 include_once '../'. INCLUDES_DIR . 'orm.php';
-
-foreach (glob('../' . MODELS_DIR . '*.php') as $filename) {
-    include_once $filename;
-}
-
-foreach (glob('../' . INTERFACES_DIR . '*.php') as $filename) {
-    include_once $filename;
-}
-
-foreach (glob('../' . CLASSES_DIR . '*.php') as $filename) {
-    include_once $filename;
-}
-
 include_once INCLUDES_DIR . 'functions.php';
 include_once INCLUDES_DIR . 'controller.php';
 

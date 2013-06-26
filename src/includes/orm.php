@@ -14,7 +14,3 @@ ORM::configure('username', DB_USER);
 ORM::configure('password', DB_PASS);
 ORM::configure('logging', DB_LOGGING);
 Model::$auto_prefix_models = '\\Unamed\\Models\\';
-
-foreach (glob(MODELS_DIR . '*.php') as $filename) {
-    include_once $filename;
-}
