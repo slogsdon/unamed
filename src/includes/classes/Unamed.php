@@ -199,10 +199,9 @@ namespace Unamed {
         protected function loadPlugins()
         {
             // read $dir, add filenames
-            $dir = 'plugins';
+            $dir = PLUGINS_DIR;
             if ($this->isAdmin) $dir = '../' . $dir;
-            if ($d = dir($dir . DS)) {
-                $dir .= DS;
+            if ($d = dir($dir)) {
                 $a = array();
                 while (false !== ($file = $d->read())) {
                     if ($file != "."
@@ -221,6 +220,8 @@ namespace Unamed {
                     if (file_exists($dir . $file)) {
                         include_once $dir . $file;
                         $this->plugins[] = $name;
+                        if (class_exists($name))
+                            $this->{$name} = new $name();
                     }
                 }
             }
@@ -757,7 +758,7 @@ namespace Unamed {
          *
          * @return nothing
          */
-        protected function pluginsLoaded()
+        public function pluginsLoaded()
         {
             $this->execute('prePluginsLoaded');
             $this->loadPlugins();
