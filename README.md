@@ -22,14 +22,13 @@ What's in progress?
 -----
 
 * It can make things pretty
+* Admin interface has a great start
 * It allows for hooks (similar to [these](http://codex.wordpress.org/Plugin_API)) to be used
 
 What's left?
 -----
 
 * Verification that all Wordpress hooks work appropriately
-* Implement the routing (using [Toro](https://github.com/anandkunal/ToroPHP))
-* Build the admin interface
 * Write phpunit tests
 
 Setup (with [Composer](http://getcomposer.org/))
