@@ -542,14 +542,66 @@ namespace Unamed {
          */
         public function getStyles()
         {
-
             $styles = new \SplQueue();
+            $otherStyles = new \SplQueue();
+            $arr = array();
+            $order = array();
+
             while (!$this->styles->isEmpty())
             {
                 $style = $this->styles->dequeue();
-                if ($style->enabled) 
-                    $styles->enqueue($style); 
+
+                if (!$style->enabled) 
+                {
+                    $otherStyles->enqueue($style);
+                    continue;
+                }
+
+                $arr[$style->handle] = $style;
             }
+
+            foreach ($arr as $handle => $style)
+            {
+                if (count($style->deps) === 0 && !in_array($handle, $order))
+                {
+                    array_unshift($order, $handle);
+                    continue;
+                }
+
+                foreach ($style->deps as $dep)
+                {
+                    if (!in_array($dep, $order))
+                        array_push($order, $dep);
+                }
+
+                $indexOfLastDep = 0;
+                foreach ($style->deps as $dep)
+                {
+                    $iArr = array_keys($order, $dep);
+                    $i = isset($iArr[count($iArr) - 1]) ? 
+                        $iArr[count($iArr) - 1] : 0;
+                    if ($i > $indexOfLastDep)
+                        $indexOfLastDep = $i;
+                }
+
+                if (count($order) > $indexOfLastDep + 1)
+                    $index = $indexOfLastDep + 1;
+                else
+                    $index = count($order);
+
+                $before = array_slice($order, 0, $index);
+                $after = array_slice($order, $index);
+                if (!in_array($handle, $order))
+                    $order = array_merge($before, array($handle), $after);
+            }
+
+            foreach ($order as $handle)
+            {
+                $styles->enqueue($arr[$handle]);
+            }
+
+            $this->styles = null;
+            $this->styles = $otherStyles;
             return $styles;
         }
 
@@ -679,20 +731,68 @@ namespace Unamed {
         public function getScripts($inFooter = true)
         {
             $scripts = new \SplQueue();
-            $otherEnabledScripts = new \SplQueue();
+            $otherScripts = new \SplQueue();
+            $arr = array();
+            $order = array();
+
             while (!$this->scripts->isEmpty())
             {
                 $script = $this->scripts->dequeue();
-                if ($script->enabled) 
+
+                if (!$script->enabled) 
                 {
-                    if ($script->inFooter === $inFooter) 
-                        $scripts->enqueue($script); 
-                    else
-                        $otherEnabledScripts->enqueue($script);
+                    $otherScripts->enqueue($script);
+                    continue;
                 }
+
+                if ($script->inFooter === $inFooter) 
+                    $arr[$script->handle] = $script;
+                else
+                    $otherScripts->enqueue($script);
             }
+
+            foreach ($arr as $handle => $script)
+            {
+                if (count($script->deps) === 0 && !in_array($handle, $order))
+                {
+                    array_unshift($order, $handle);
+                    continue;
+                }
+
+                foreach ($script->deps as $dep)
+                {
+                    if (!in_array($dep, $order))
+                        array_push($order, $dep);
+                }
+
+                $indexOfLastDep = 0;
+                foreach ($script->deps as $dep)
+                {
+                    $iArr = array_keys($order, $dep);
+                    $i = isset($iArr[count($iArr) - 1]) ? 
+                        $iArr[count($iArr) - 1] : 0;
+                    if ($i > $indexOfLastDep)
+                        $indexOfLastDep = $i;
+                }
+
+                if (count($order) > $indexOfLastDep + 1)
+                    $index = $indexOfLastDep + 1;
+                else
+                    $index = count($order);
+
+                $before = array_slice($order, 0, $index);
+                $after = array_slice($order, $index);
+                if (!in_array($handle, $order))
+                    $order = array_merge($before, array($handle), $after);
+            }
+
+            foreach ($order as $handle)
+            {
+                $scripts->enqueue($arr[$handle]);
+            }
+
             $this->scripts = null;
-            $this->scripts = $otherEnabledScripts;
+            $this->scripts = $otherScripts;
             return $scripts;
         }
 
