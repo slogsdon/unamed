@@ -48,3 +48,5 @@ Dependencies (if you want to install without composer)
 -----
 
 * [Paris](https://github.com/j4mie/paris)
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/2a551b5c1c6695a1e415bf24420d262d "githalytics.com")](http://githalytics.com/slogsdon/unamed)
